@@ -11,7 +11,7 @@
         <nav id="topNav">
             <ul>
                 <!-- make admin settings and create event appear only if the user has the rights to it -->
-                <li><a href="adminSettings.html" id="adminSettings">Administrative Settings</a></li>
+                <li><a href="./adminSettings/adminSettings.html" id="adminSettings">Administrative Settings</a></li>
                 <li><a href="createEvent.html" id="createEvent">Create Event</a></li>
                 <li><a href="profile.html" id="profile">Profile</a></li>
                 <li><a href="login.html" id="logout">Log out</a></li>
