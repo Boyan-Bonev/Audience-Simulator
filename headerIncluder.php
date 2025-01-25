@@ -2,7 +2,6 @@
 // insert code here
 ?>
 
-    <link rel="stylesheet" href="headerStyles.css">
     <header>
         <section id="profileInfo">
             <!-- take the information from a database about users -->
@@ -12,10 +11,10 @@
         <nav id="topNav">
             <ul>
                 <!-- make admin settings and create event appear only if the user has the rights to it -->
-                <li><a href="adminSettings.html">Administrative Settings</a></li>
-                <li><a href="createEvent.html">Create Event</a></li>
-                <li><a href="profile.html">Profile</a></li>
-                <li><a href="login.html">Log out</a></li>
+                <li><a href="adminSettings.html" id="adminSettings">Administrative Settings</a></li>
+                <li><a href="createEvent.html" id="createEvent">Create Event</a></li>
+                <li><a href="profile.html" id="profile">Profile</a></li>
+                <li><a href="login.html" id="logout">Log out</a></li>
             </ul>
         </nav>
     </header>
