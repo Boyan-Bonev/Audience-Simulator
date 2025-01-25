@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Dashboard</title>
+    <link rel="stylesheet" href="dashboardStyles.css">
+</head>
+<body>
+    
+    <header>
+        <section id="profileInfo">
+            <!-- take the information from a database about users -->
+            <img id="profilePicture" alt = "N/A"></img>
+            <p id="profileName">Profile name</p>
+        </section>
+        <nav id="topNav">
+            <ul>
+                <!-- make admin settings and create event appear only if the user has the rights to it -->
+                <li><a href="adminSettings.html">Administrative Settings</a></li>
+                <li><a href="createEvent.html">Create Event</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="login.html">Log out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- get events by some database instead of statically adding them -->
+    <section id="eventGrid">
+        <a href="event1.html" class="eventCard">
+            <h3>Event 1 Name</h3>
+            <img src="event1.jpg" alt="Event 1">
+            <p>Event 1 Description</p>
+        </a>
+        <a href="event2.html" class="eventCard">
+            <h3>Event 2 Name</h3>
+            <img src="event2.jpg" alt="Event 2">
+            <p>Event 2 Description</p>
+        </a>
+        <a href="event3.html" class="eventCard">
+            <h3>Event 3 Name</h3>
+            <img src="event3.jpg" alt="Event 3">
+            <p>Event 3 Description</p>  
+        </a>
+        <a href="event4.html" class="eventCard">
+            <h3>Event 4 Name</h3>
+            <img src="event4.jpg" alt="Event 4">
+            <p>Event 4 Description</p>
+        </a>
+        <a href="event5.html" class="eventCard">
+            <h3>Event 5 Name</h3>
+            <img src="event5.jpg" alt="Event 5">
+            <p>Event 5 Description</p>
+        </a>
+        <a href="event6.html" class="eventCard">
+            <h3>Event 6 Name</h3>
+            <img src="event6.jpg" alt="Event 6">
+            <p>Event 6 Description</p>
+        </a>
+    </section>
+
+    <!-- link the submit button or the form to a script that checks if it's a valid link -->
+    <!-- and if it leads to the page of the given event -->
+    <section id="bottomSection">
+        <form id = "eventLinkForm">
+            <label for="eventLink">Insert link</label>
+            <input type="text" id="eventLink" name="eventLink">
+            <input type="submit" value="Submit">
+        </form>
+    </section>
+
+</body>
+</html>
