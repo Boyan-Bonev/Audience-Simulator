@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- make it so it copies the name of the event for a title -->
+    <title>Event Page</title>
+    <link rel="stylesheet" href="eventStyles.css">
+</head>
+<body>
+    <!-- make it live! -->
+
+    <!-- connect it to the currently active command -->
+    <section id="commandDisplay">
+        Command: <span id="commandText"></span> | Time Left: <span id="countdown"></span>
+    </section>
+
+    <!-- dynamically adds participants instead of statically-->
+    <!-- make it so if they play a noise, use an emoji or play a video -->
+    <!-- it appears for everyone live -->
+    <!-- same goes for the +1 button -->
+    <section class="container">
+        <section class="participant">
+            <button class="plusOne">+1</button>
+            <img src="placeholder.png" alt="Profile 1">
+        </section>
+        <section class="participant">
+            <button class="plusOne">+1</button>
+            <img src="placeholder.png" alt="Profile 2">
+        </section>
+        <section class="participant">
+            <button class="plusOne">+1</button>
+            <img src="placeholder.png" alt="Profile 3">
+        </section>
+        <section class="participant">
+            <button class="plusOne">+1</button>
+            <img src="placeholder.png" alt="Profile 4">
+        </section>
+        <section class="participant">
+            <button class="plusOne">+1</button>
+            <img src="placeholder.png" alt="Profile 5">
+        </section>
+        <section class="participant">
+            <button class="plusOne">+1</button>
+            <img src="placeholder.png" alt="Profile 6">
+        </section>
+    </section>
+
+    <!-- create the popups and link the entered information -->
+    <!-- to the event page -->
+    <!-- make it so the user gains a point if -->
+    <!-- they time the correct reaction successfully -->
+    <section id="controls">
+        <button onclick="openPopup('commandPopup')">Activate Command</button>
+        <button onclick="openPopup('emojiPopup')">Use an emoji</button>
+        <button onclick="openPopup('soundPopup')">Play a sound</button>
+        <button onclick="openPopup('videoPopup')">Play a video</button>
+        <!-- connect this to the simulation mode -->
+        <!-- that's connected to the user's profile --> 
+        <label>Simulate: <input type="checkbox"></label>
+    </section>
+
+    <section id="commandPopup" class="popup">
+        <h2>Activate Command</h2>
+        <button onclick="closePopup('commandPopup')">Close</button>
+    </section>
+
+    <section id="emojiPopup" class="popup">
+        <h2>Select Emoji</h2>
+        <button onclick="closePopup('emojiPopup')">Close</button>
+    </section>
+
+    <section id="soundPopup" class="popup">
+        <h2>Play Sound</h2>
+        <button onclick="closePopup('soundPopup')">Close</button>
+    </section>
+
+    <section id="videoPopup" class="popup">
+        <h2>Play Video</h2>
+        <button onclick="closePopup('videoPopup')">Close</button>
+    </section>
+
+    <section class="overlay" id="overlay"></section>
+
+    <script>
+    function openPopup(popupId) {
+        document.getElementById(popupId).style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+    }
+
+    function closePopup(popupId) {
+        document.getElementById(popupId).style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+    }
+    </script>
+
+</body>
+</html>
