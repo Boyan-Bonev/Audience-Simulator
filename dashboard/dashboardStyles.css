@@ -1,0 +1,102 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(243, 239, 226);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: aquamarine;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+#profileInfo {
+    display: flex;
+    align-items: center;
+}
+
+#profilePicture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    margin-right: 10px;
+    text-align: center;
+}
+
+#topNav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+#topNav li {
+    margin-left: 20px;
+}
+
+#topNav a {
+    text-decoration: none;
+    color: #333;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.eventCard {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center; 
+    text-decoration: none;
+    color: black;
+}
+
+.eventCard img {
+    max-width: 100%;
+    height: auto;
+}
+
+#bottomSection {
+    display: flex;
+    padding: 20px;
+    width: 500px;
+    float: right;
+    text-align: end;
+}
+
+
+#eventLinkForm {
+    border: 1px solid #ccc;
+    padding: 10px;
+    flex-grow: 1; /* Takes up available space */
+    margin-right: 20px; 
+    background-color: aquamarine;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+   #eventGrid {
+       grid-template-columns: repeat(2, 1fr);
+   }
+}
+
+@media (max-width: 500px) {
+    #eventGrid {
+       grid-template-columns: 1fr;
+    }
+    nav ul {
+        flex-direction: column; /* Stack navigation vertically */
+        align-items: flex-end;
+    }
+    nav li {
+        margin: 5px 0; /* Adjust vertical spacing */
+    }
+}
