@@ -1,7 +1,7 @@
 <?php
-// TODO: Has to be connected to the session so it enters the given username and password
+
 try {
-    $conn = new mysqli("localhost", "username", "password", "database");
+    $conn = new mysqli("localhost", "root", "", "events");
 }
 catch (mysqli_sql_exception $e) {
     die("Could not connect to the database: " . $e->getMessage());
@@ -11,7 +11,7 @@ if ($conn->connect_error) {
     die("A database error occurred. Please try again later.");
 }
 
-$sql = "SELECT * FROM events"; // TODO: create the database and choose which columns will be shown
+$sql = "SELECT * FROM meetings";
 $result = $conn->query($sql);
 
 $events = array();
@@ -21,7 +21,7 @@ if ($result->num_rows > 0) {
     }
 }
  
-header('Content-Type: application/json'); // TODO: Choose header content
+header('Content-Type: application/json');
 echo json_encode($events);
 
 $conn->close();

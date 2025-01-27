@@ -1,6 +1,6 @@
 function filterEvents() {
     const filterText = document.getElementById('filterBy').value.toLowerCase();
-    const eventList = document.getElementById('eventList');
+    const eventList = document.getElementById('eventsList');
     const listItems = eventList.getElementsByTagName('li');
 
     for (let i = 0; i < listItems.length; i++) {

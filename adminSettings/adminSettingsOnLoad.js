@@ -4,8 +4,7 @@ function displayEvents(events) {
 
     events.forEach(event => {
         const listItem = document.createElement('li');
-        // TODO: decide which columns will be shown
-        listItem.textContent = event.name + " - " + event.description;
+        listItem.textContent = event.name + " - " + event.description + " - " + event.participants;
         eventList.appendChild(listItem);
     });
 }
@@ -23,8 +22,8 @@ window.onload = function() {
             const userSelect = document.getElementById('user');
             users.forEach(user => {
                 const option = document.createElement('option');
-                option.value = user.username;
-                option.text = user.username;
+                option.value = user.name;
+                option.text = user.name;
                 userSelect.appendChild(option);
             });
         });

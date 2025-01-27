@@ -1,7 +1,7 @@
 <?php
-// TODO: Has to be connected to the session so it enters the given username and password
+
 try {
-    $conn = new mysqli("localhost", "username", "password", "database");
+    $conn = new mysqli("localhost", "root", "", "registration_form");
 }
 catch (mysqli_sql_exception $e) {
     die("Could not connect to the database: " . $e->getMessage());
@@ -11,7 +11,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT username FROM users"; // TODO: Have to create the given database
+$sql = "SELECT name FROM users";
 $result = $conn->query($sql);
 
 $users = array();
@@ -21,7 +21,7 @@ if ($result->num_rows > 0) {
     }
 }
 
-header('Content-Type: application/json'); // TODO: Choose header content
+header('Content-Type: application/json');
 echo json_encode($users);
 
 $conn->close();

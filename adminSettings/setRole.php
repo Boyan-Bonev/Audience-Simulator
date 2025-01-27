@@ -1,7 +1,7 @@
 <?php
-// TODO: Has to be connected to the session so it enters the given username and password
+
 try {
-    $conn = new mysqli("localhost", "username", "password", "database");
+    $conn = new mysqli("localhost", "root", "", "registration_form");
 }
 catch (mysqli_sql_exception $e) {
     die("Could not connect to the database: " . $e->getMessage());
@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $_POST["user"];
     $role = $_POST["role"];
 
-    $stmt = $conn->prepare("UPDATE users SET role = ? WHERE username = ?");
+    $stmt = $conn->prepare("UPDATE users SET role = ? WHERE name = ?");
     $stmt->bind_param("si", $role, $user);
 
     if ($stmt->execute()) {
