@@ -44,7 +44,7 @@ header {
     color: #333;
 }
 
-.container {
+.events {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
@@ -73,7 +73,7 @@ header {
 }
 
 
-#eventLinkForm {
+#eventConnectForm {
     border: 1px solid #ccc;
     padding: 10px;
     flex-grow: 1; /* Takes up available space */
@@ -83,13 +83,13 @@ header {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-   #eventGrid {
+   .events {
        grid-template-columns: repeat(2, 1fr);
    }
 }
 
 @media (max-width: 500px) {
-    #eventGrid {
+    .events {
        grid-template-columns: 1fr;
     }
     nav ul {
