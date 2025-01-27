@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- make it so it copies the name of the event for a title -->
-    <title>Event Page</title>
+    <title id="meetingName">Event Page</title>
     <link rel="stylesheet" href="eventStyles.css">
 </head>
 <body>
@@ -19,31 +18,7 @@
     <!-- make it so if they play a noise, use an emoji or play a video -->
     <!-- it appears for everyone live -->
     <!-- same goes for the +1 button -->
-    <section class="container">
-        <section class="participant">
-            <button class="plusOne">+1</button>
-            <img src="placeholder.png" alt="Profile 1">
-        </section>
-        <section class="participant">
-            <button class="plusOne">+1</button>
-            <img src="placeholder.png" alt="Profile 2">
-        </section>
-        <section class="participant">
-            <button class="plusOne">+1</button>
-            <img src="placeholder.png" alt="Profile 3">
-        </section>
-        <section class="participant">
-            <button class="plusOne">+1</button>
-            <img src="placeholder.png" alt="Profile 4">
-        </section>
-        <section class="participant">
-            <button class="plusOne">+1</button>
-            <img src="placeholder.png" alt="Profile 5">
-        </section>
-        <section class="participant">
-            <button class="plusOne">+1</button>
-            <img src="placeholder.png" alt="Profile 6">
-        </section>
+    <section id="participants">
     </section>
 
     <!-- create the popups and link the entered information -->
@@ -92,6 +67,82 @@
         document.getElementById(popupId).style.display = "none";
         document.getElementById("overlay").style.display = "none";
     }
+    </script>
+
+    <script>
+        var meetingName = "test1"; // Replace with dynamic ID as needed
+
+        // Fetch and update meeting info
+        function updateMeetingInfo() {
+            fetch(`meeting.php?meeting_name=${meetingName}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('meetingName').textContent = data.meeting.name;
+
+                        const participantsContainer = document.getElementById('participants');
+                        participantsContainer.innerHTML = '';
+
+                        const participants = JSON.parse(data.meeting.participants || '[]');
+
+                        // TODO: Have to connect it to the given participant 
+                        // in order to be able to access their photo, points and name
+                        participants.forEach(participant => {
+                            const participantSection = document.createElement('section');
+                            participantSection.classList.add('participant');
+
+                            const button = document.createElement('button');
+                            button.classList.add('plusOne');
+                            button.textContent = '+1';
+                            participantSection.appendChild(button);
+
+                            const img = document.createElement('img');
+                            img.src = 'placeholder.png';
+                            img.alt = `Profile of ${participant}`;
+                            participantSection.appendChild(img);
+
+                            // Add the section to the container
+                            participantsContainer.appendChild(participantSection);
+                        });
+                    } else {
+                        alert(data.error || 'Failed to fetch meeting info');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function joinMeeting(eventName) {
+            fetch('meeting.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `meeting_name=${encodeURIComponent(eventName)}`
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log(`Joined meeting: ${eventName}`);
+                        updateMeetingInfo();
+                    } else {
+                        alert(data.error || 'Failed to join meeting');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Periodically refresh meeting info
+        setInterval(updateMeetingInfo, 5000);
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const eventName = getQueryParam('name');
+        if (eventName) {
+            console.log(`Connected to event:` + eventName);
+            document.getElementById('meetingName').textContent = eventName;
+            joinMeeting(eventName);
+        }
     </script>
 
 </body>

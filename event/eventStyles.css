@@ -12,12 +12,12 @@ body {
     height: 40px;
 }
 
-.container {
+#participants {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
     margin-bottom: 20px;
-}
+}   
 
 .participant {
     border: 1px solid black;
