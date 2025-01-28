@@ -1,8 +1,5 @@
 <?php
 
-session_start();
-header('Content-Type: application/json');
-
 $dsn = "mysql:host=localhost;dbname=events;charset=utf8mb4";
 $username = "root";
 $password = "";
