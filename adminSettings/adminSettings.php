@@ -28,9 +28,7 @@
         </section>
         <nav id="topNav">
             <ul>
-                <!-- make admin settings and create event appear only if the user has the rights to it -->
-                <li><a href="../adminSettings/adminSettings.php" id="adminSettings">Administrative Settings</a></li>
-                <li><a href="createEvent.html" id="createEvent">Create Event</a></li>
+                <?php include '../dashboard/changeButtonVisibility.php' ?>
                 <li><a href="profile.html" id="profile">Profile</a></li>
                 <li><a href="../login/logout.php" id="logout" class="btn btn-warning">Log out</a></li>
             </ul>
