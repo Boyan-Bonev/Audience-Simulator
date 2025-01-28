@@ -1,6 +1,4 @@
-/* style.css */
-
-/* General styling for the body */
+/* body */
 body {
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
@@ -9,7 +7,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; 
 }
 
 /* Container for the form */
@@ -20,6 +18,7 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     width: 100%;
+    text-align: center; 
 }
 
 /* Form title */
@@ -34,6 +33,7 @@ h2 {
 /* Form group spacing */
 .form-group {
     margin-bottom: 15px;
+    width: 100%;
 }
 
 /* Input fields styling */
@@ -43,38 +43,39 @@ h2 {
     border-radius: 5px;
     padding: 10px;
     font-size: 14px;
+    width: 95%; 
     transition: all 0.3s ease;
 }
 
 /* Input field focus effect */
 .form-control:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #777777;
+    box-shadow: 0 0 5px #3f3f3f;
     outline: none;
 }
 
 /* Submit button styling */
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: rgb(197, 8, 55);
+    border-color: rgb(197, 8, 55);
     color: #fff;
     font-size: 16px;
     font-weight: bold;
     height: 45px;
     border-radius: 5px;
-    width: 100%;
+    width: 100%; 
     transition: all 0.3s ease;
 }
 
 /* Submit button hover effect */
 .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: rgb(145, 6, 41);
+    border-color: rgb(145, 6, 41);
 }
 
 /* Link styling */
 a {
-    color: #007bff;
+    color: rgb(197, 8, 55);
     text-decoration: none;
     font-weight: bold;
 }
