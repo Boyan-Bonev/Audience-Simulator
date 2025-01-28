@@ -21,7 +21,7 @@
         if (isset($_POST["submit"]))
         {
             
-            $fullName = $_POST["fullname"];
+            $name = $_POST["name"];
             $email = $_POST["email"];
             $password = $_POST["password"];
             $passwordRepeat = $_POST["repeat_password"];
@@ -29,7 +29,7 @@
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
             $errors = array();
 
-            if(empty($fullName) OR empty($email) OR empty($password) OR empty($passwordRepeat))
+            if(empty($name) OR empty($email) OR empty($password) OR empty($passwordRepeat))
             {
                 array_push($errors,"All fields are required");
             }
@@ -65,12 +65,12 @@
             else
             {
                 
-                $sql = "INSERT INTO users (full_name,email,password) VALUES (? ,? ,? );";
+                $sql = "INSERT INTO users (name,email,password) VALUES (? ,? ,? );";
                 $stmt = mysqli_stmt_init($conn);
                 $prepareStmt = mysqli_stmt_prepare($stmt,$sql);
                 if($prepareStmt)
                 {
-                    mysqli_stmt_bind_param($stmt,"sss",$fullName,$email,$passwordHash);
+                    mysqli_stmt_bind_param($stmt,"sss",$name,$email,$passwordHash);
                     mysqli_stmt_execute($stmt);
                     echo "<div class='alert alert-success'>You are registered successfully!</div>";
                 }
@@ -83,7 +83,7 @@
         ?>
         <form action="registration.php" method="post">
             <div class="form-group">
-                <input type="text" class="form-control" name="fullname" placeholder="Full Name:">
+                <input type="text" class="form-control" name="name" placeholder="Full Name:">
             </div> 
             <div class="form-group">
                 <input type="text" class="form-control" name="email" placeholder="Email:">
