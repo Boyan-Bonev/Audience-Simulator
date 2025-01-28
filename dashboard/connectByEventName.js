@@ -13,7 +13,7 @@ form.addEventListener('submit', function(event) {
     try {
         url = new URL(eventName);
     } catch (_) {
-        url = new URL("http://localhost/Audience-Simulator/event/event.html?name=" + encodeURIComponent(eventName));
+        url = new URL("http://localhost/Audience-Simulator/event/event.php?name=" + encodeURIComponent(eventName));
     }
     
 

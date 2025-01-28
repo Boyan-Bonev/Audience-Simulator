@@ -1,3 +1,16 @@
+<?php
+    session_start();
+    if(!isset($_SESSION["user"]))
+    {
+        header("Location: ../login/login.php");
+    }
+    require_once "../login/database.php";
+    $email = $_SESSION["user"];
+    $sql = "SELECT * FROM users WHERE email='$email'";
+    $result = mysqli_query($conn,$sql);
+    $user = mysqli_fetch_array($result,MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,7 +83,17 @@
     </script>
 
     <script>
-        var meetingName = "test1"; // Replace with dynamic ID as needed
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const meetingName = getQueryParam('name');
+        if (meetingName) {
+            console.log(`Connected to event:` + meetingName);
+            document.getElementById('meetingName').textContent = meetingName;
+            joinMeeting(meetingName);
+        }
 
         // Fetch and update meeting info
         function updateMeetingInfo() {
@@ -106,6 +129,7 @@
                         });
                     } else {
                         alert(data.error || 'Failed to fetch meeting info');
+                        window.location.href = "../dashboard/dashboard.php"; 
                     }
                 })
                 .catch(error => console.error('Error:', error));
@@ -124,6 +148,7 @@
                         updateMeetingInfo();
                     } else {
                         alert(data.error || 'Failed to join meeting');
+                        window.location.href = "../dashboard/dashboard.php"; 
                     }
                 })
                 .catch(error => console.error('Error:', error));
@@ -132,17 +157,36 @@
         // Periodically refresh meeting info
         setInterval(updateMeetingInfo, 5000);
 
-        function getQueryParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
+        // TODO: 
+        /*window.onbeforeunload = function() {
+            fetch('/removeUserFromMeeting.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: $_SESSION["user"],
+                    meetingName: meetingName
+                })
+            });
+        };*/
+        window.onload = function() {
+            fetch(`addUserToMeeting.php?meetingName=${meetingName}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+                })
+            .then(data => {
+                console.log(data);
+                })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+                });
+        };
 
-        const eventName = getQueryParam('name');
-        if (eventName) {
-            console.log(`Connected to event:` + eventName);
-            document.getElementById('meetingName').textContent = eventName;
-            joinMeeting(eventName);
-        }
+        updateMeetingInfo();
     </script>
 
 </body>

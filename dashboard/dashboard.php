@@ -40,48 +40,44 @@
         </section>
         <nav id="topNav">
             <ul>
-                <!-- make admin settings and create event appear only if the user has the rights to it -->
-                <li><a href="../adminSettings/adminSettings.php" id="adminSettings">Administrative Settings</a></li>
-                <li><a href="createEvent.html" id="createEvent">Create Event</a></li>
+                <?php include 'changeButtonVisibility.php' ?>
                 <li><a href="profile.html" id="profile">Profile</a></li>
                 <li><a href="../login/logout.php" id="logout" class="btn btn-warning">Log out</a></li>
             </ul>
         </nav>
     </header>
     
-    <!-- get events by some database instead of statically adding them -->
-    <section class="events">
-        <a href="event1.html" class="eventCard">
-            <h3>test1</h3>
-            <img src="event1.jpg" alt="Event 1">
-            <p>Event 1 Description</p>
-        </a>
-        <a href="event2.html" class="eventCard">
-            <h3>Event 2 Name</h3>
-            <img src="event2.jpg" alt="Event 2">
-            <p>Event 2 Description</p>
-        </a>
-        <a href="event3.html" class="eventCard">
-            <h3>Event 3 Name</h3>
-            <img src="event3.jpg" alt="Event 3">
-            <p>Event 3 Description</p>  
-        </a>
-        <a href="event4.html" class="eventCard">
-            <h3>Event 4 Name</h3>
-            <img src="event4.jpg" alt="Event 4">
-            <p>Event 4 Description</p>
-        </a>
-        <a href="event5.html" class="eventCard">
-            <h3>Event 5 Name</h3>
-            <img src="event5.jpg" alt="Event 5">
-            <p>Event 5 Description</p>
-        </a>
-        <a href="event6.html" class="eventCard">
-            <h3>Event 6 Name</h3>
-            <img src="event6.jpg" alt="Event 6">
-            <p>Event 6 Description</p>
-        </a>
-    </section>
+    <?php
+    try {
+        $conn = new mysqli("localhost", "root", "", "events");
+    }
+    catch (mysqli_sql_exception $e) {
+        die("Could not connect to the database: " . $e->getMessage());
+    }
+
+    if ($conn->connect_error) {
+        die("A database error occurred. Please try again later.");
+    }
+
+    $sql = "SELECT name, photo, description FROM meetings";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo '<section class="events">';
+        while($row = $result->fetch_assoc()) {
+            echo '<a href="event.php?name=' . urlencode($row["name"]) . '" class="eventCard">';
+            echo '<h3>' . $row["name"] . '</h3>';
+            echo '<img src="../eventPhotos/' . $row["photo"] . '" alt="' . $row["name"] . '">';
+            echo '<p>' . $row["description"] . '</p>';
+            echo '</a>';
+        }
+        echo '</section>';
+    } else {
+        echo "<p>No events found.</p>";
+    }
+
+    $conn->close();
+    ?>
 
     <section id="bottomSection">
         <form id = "eventConnectForm">
