@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="profileStyle.css">
+</head>
+<body>
+ <script src="displayInfo.js"></script>
+ <header>
+        <section id="profileInfo">
+            <!-- take the information from a database about users -->
+            <img id="profilePicture" alt = "N/A"></img>
+            <p id="profileName">Profile name</p>
+        </section>
+        <nav id="topNav">
+            <ul>
+                <!-- make admin settings and create event appear only if the user has the rights to it -->
+                <li><a href="./adminSettings/adminSettings.html" id="adminSettings">Administrative Settings</a></li>
+                <li><a href="createEvent.html" id="createEvent">Create Event</a></li>
+                <li><a href="profile.html" id="profile">Profile</a></li>
+                <li><a href="login.html" id="logout">Log out</a></li>
+            </ul>
+        </nav>
+ </header>
+ <section id="picSpace">
+  <img id="profPic" src="./ilias.png" alt="profile picture"><!-- each profile pic is stored in a single location (could be named different) and a ref to that image(idHere) is stored in db -->
+    
+ </section>
+ 
+
+ <section id="info">
+ <h2 id="username">Username Name</h2>
+ <hr/>
+  <ul id="profData">
+   <li id="pointsLi">Points go here</li>
+   <li id="otherLi">Other goes here</li>   
+  </ul>
+ </section>
+</body>
