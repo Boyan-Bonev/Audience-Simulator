@@ -1,27 +1,49 @@
 <?php
- session_start();
- $id = $_SESSION["iduser"];
- try {
-    $conn = new mysqli("localhost", "username", "password", "database");
-}
-catch (mysqli_sql_exception $e) {
-    die("Could not connect to the database: " . $e->getMessage());
+if (session_id() == "") {
+    session_start();
 }
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!isset($_SESSION["user"])) {
+    header("Location: ../login/login.php");
+    exit;
 }
 
+require_once "../login/database.php";
 
-$sql = $conn->prepare("Select username,points,extraData FROM users WHERE iduser = ?");
-$sql->bind_param("i",$id);
-$result = $sql->execute();
-if ($result->num_rows > 0) {
-    $entry = $result->fetch_assoc();
+$email = $_SESSION["user"];
+
+$stmt = $conn->prepare("SELECT name, photo FROM registration_form.users WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc(); 
+
+if (!$user) {
+    $profileName = "User Not Found";
+    $profilePicture = "default_profile.jpg";
+	$profilePoints = -1;
+	$profileRole = "User";
+	
+} else {
+    $profileName = htmlspecialchars($user['name']);
+    $profilePicture = htmlspecialchars($user['photo']);
+    if ($profilePicture === null || $profilePicture === "") {
+        $profilePicture = "default_profile.jpg";
+    }
+	$profilePoints = $user['points'];
+	$profileRole = ucfirst($user['role']);
+	if ($profileRole === null ) {
+		$profileRole = "Guest"
+	}
 }
 
-header('Content-Type: application/json'); 
-echo json_encode($entry);
+$profileData = [
+    'name' => $profileName,
+    'picture' => $profilePicture,
+	'points' => $profilePoints,
+	'role' => $profileRole,
+];
 
-$conn->close();
+return $profileData;
+
 ?>
