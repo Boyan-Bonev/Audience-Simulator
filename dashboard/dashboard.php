@@ -22,31 +22,9 @@
 <body>
     
     <?php
-    $profileData = include 'profileData.php'; 
-
-    if ($profileData === false) {
-        die("Error including profile data.");
-    }
-
-    $profileName = $profileData['name'];
-    $profilePicture = $profileData['picture'];
-    $profilePicture = "../userPhotos/$profilePicture";
+        include '../header/header.php'
     ?>
 
-    <header>
-        <section id="profileInfo">
-            <img id="profilePicture" src="<?php echo $profilePicture; ?>" alt="<?php echo $profileName; ?>">
-            <p id="profileName"><?php echo $profileName; ?></p>
-        </section>
-        <nav id="topNav">
-            <ul>
-                <?php include 'changeButtonVisibility.php' ?>
-                <li><a href="../profile/profile.php" id="profile">Profile</a></li>
-                <li><a href="../login/logout.php" id="logout" class="btn btn-warning">Log out</a></li>
-            </ul>
-        </nav>
-    </header>
-    
     <?php
     try {
         $conn = new mysqli("localhost", "root", "", "events");

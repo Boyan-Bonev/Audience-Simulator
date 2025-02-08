@@ -1,8 +1,17 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(255, 255, 255);
+}
+
+
 header {
     display: flex;
+    color: #fff;
     justify-content: space-between;
     align-items: center;
-    background-color: aquamarine;
+    background-color: rgb(197, 8, 55);
     padding: 10px 20px;
     border-bottom: 1px solid #ccc;
 }
@@ -21,6 +30,19 @@ header {
     text-align: center;
 }
 
+#logout {
+    background-color: #1dc70a; 
+    color: #172b1d; 
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    padding: 10px 10px; 
+}
+
+#logout:hover {
+    background-color: #1db30d; 
+}
+
 #topNav ul {
     list-style: none;
     margin: 0;
@@ -34,5 +56,5 @@ header {
 
 #topNav a {
     text-decoration: none;
-    color: #333;
+    color: #fff;
 }
