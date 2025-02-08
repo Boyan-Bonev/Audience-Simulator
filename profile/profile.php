@@ -40,11 +40,11 @@
  
 
  <section id="info">
- <h2 id="username"><?php echo $profileName; ?></h2>
+ <h2 id="username"><?php echo "Hey ".$profileName.", how's it going?"; ?></h2>
  <hr/>
   <ul id="profData">
-   <li id="pointsLi"><?php echo $profilePoints; ?></li>
-   <li id="otherLi"><?php echo $profileRole; ?></li>   
+   <li id="pointsLi"><?php echo "You have ".$profilePoints." points."; ?></li>
+   <li id="otherLi"><?php echo "Your role on this fine website: ".$profileRole; ?></li>   
   </ul>
  </section>
 </body>

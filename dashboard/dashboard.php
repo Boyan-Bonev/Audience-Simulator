@@ -41,7 +41,7 @@
         <nav id="topNav">
             <ul>
                 <?php include 'changeButtonVisibility.php' ?>
-                <li><a href="profile.html" id="profile">Profile</a></li>
+                <li><a href="../profile/profile.php" id="profile">Profile</a></li>
                 <li><a href="../login/logout.php" id="logout" class="btn btn-warning">Log out</a></li>
             </ul>
         </nav>
