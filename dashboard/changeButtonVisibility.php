@@ -27,7 +27,7 @@ if ($result->num_rows > 0) {
             echo '<li><a href="../adminSettings/adminSettings.php" id="adminSettings">Administrative Settings</a></li>';
         }
         if ($userRole === "admin" || $userRole === "creator") {
-            echo '<li><a href="createEvent.html" id="createEvent">Create Event</a></li>';
+            echo '<li><a href="../createEvent/createEvents.php" id="createEvent">Create Event</a></li>';
         }   
     }   
 }
