@@ -38,6 +38,7 @@ try {
         description TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         ends_at DATETIME DEFAULT NULL,
+        participantsCount INT DEFAULT 10,
         participants VARCHAR(255) DEFAULT NULL
     )";
     $conn->exec($sql);
