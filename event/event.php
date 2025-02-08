@@ -124,7 +124,6 @@
                             img.alt = `Profile of ${participant}`;
                             participantSection.appendChild(img);
 
-                            // Add the section to the container
                             participantsContainer.appendChild(participantSection);
                         });
                     } else {

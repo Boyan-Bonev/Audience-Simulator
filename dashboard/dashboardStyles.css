@@ -63,19 +63,23 @@ header {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    padding: 20px;
+    padding: 20px;  
+    overflow: hidden;
 }
 
 .eventCard {
     border: 1px solid #ccc;
-    padding: 10px;
     text-align: center; 
     text-decoration: none;
     color: black;
     border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
     height: 200px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-
+    transition: transform 0.3s ease, box-shadow 0.3s ease;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .eventCard:hover {
@@ -83,9 +87,20 @@ header {
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
+.eventCard h3 {
+   margin: 5px;
+   padding-bottom: 5px;
+}
+
+.eventCard p {
+    padding-top: 5px;
+    margin: 5px;
+}
+
 .eventCard img {
-    max-width: 100%;
-    height: auto;
+    width: 100%;
+    height: 125px;
+    object-fit:scale-down;
 }
 
 #bottomSection {

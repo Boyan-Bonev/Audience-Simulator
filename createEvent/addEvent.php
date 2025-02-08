@@ -11,7 +11,7 @@ function generateRandomString($length = 10) {
     return $randomString;
 }  //func to generate random string for use in img filename, taken from https://stackoverflow.com/questions/4356289/php-random-string-generator
 
- if (session_id() == "") {
+if (session_id() == "") {
     session_start();
 }
 
@@ -49,6 +49,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	header('Location: ../dashboard/dashboard.php');
 	die();
 }
-
 
 ?>
