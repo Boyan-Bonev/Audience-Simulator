@@ -24,10 +24,10 @@ require_once "../login/database.php";
 
 $email = $_SESSION["user"];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$to = generateRandomString()."_".urlencode($email);
-	$imgName = $to;
-	$to = "uploads/".$to;
-	if(move_uploaded_file($_FILES["eventImg"]["tmp_name"], $to)) {
+	$to = generateRandomString();
+	$imgName = $to.".png";
+	$to = "../eventPhotos/".$imgName;
+	if(move_uploaded_file($_FILES['eventsImg']['tmp_name'], $to)) {
     
     }
 	
@@ -39,8 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$desc = $_POST["eventDesc"];
     
 
-    $inp = $conn->prepare("INSERT INTO events (name,userCount,img,desc) VALUES (?,?,?,?)");
-    $inp->bind_param("siss", $name, $userCount,$imgName,$desc);
+    $inp = $conn->prepare("INSERT INTO events.meetings (name,participants,photo,description) VALUES (?,?,?,?)");
+    $inp->bind_param("ssss", $name, $userCount,$imgName,$desc);
 
     $inp->execute();
 
