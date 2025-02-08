@@ -1,54 +1,53 @@
-<?php
-function generateRandomString($length = 10) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+    <link rel="stylesheet" href="createEventStyle.css">
+</head>
+<body>
+    <?php
+    $profileData = include '../profile/getInfo.php'; 
 
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    if ($profileData === false) {
+        die("Error including profile data.");
     }
 
-    return $randomString;
-}  //func to generate random string for use in img filename, taken from https://stackoverflow.com/questions/4356289/php-random-string-generator
-
- if (session_id() == "") {
-    session_start();
-}
-
-if (!isset($_SESSION["user"])) {
-    header("Location: ../login/login.php");
-    exit;
-}
-
-require_once "../login/database.php";
-
-$email = $_SESSION["user"];
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$to = generateRandomString();
-	$imgName = $to.".png";
-	$to = "../eventPhotos/".$imgName;
-	if(move_uploaded_file($_FILES['eventsImg']['tmp_name'], $to)) {
-    
-    }
+    $profileName = $profileData['name'];
+    $profilePicture = $profileData['picture'];
+    $profilePicture = "../userPhotos/$profilePicture";
 	
-	else {
-         
-    }
-	$name = $_POST["eventName"];
-	$userCount = $_POST["usersNum"];
-	$desc = $_POST["eventDesc"];
-    $created_at = date('Y-m-d H:i:s', time());
-    $ends_at = date('Y-m-d H:i:s', time() + (60*60));
+	$profileRole = $profileData['role'];
+    ?>
 
-    $inp = $conn->prepare(
-        "INSERT INTO events.meetings (name,participantsCount,photo,description,created_at,ends_at) VALUES (?,?,?,?,?,?)");
-    $inp->bind_param("ssssss", $name, $userCount,$imgName,$desc,$created_at,$ends_at);
-    $inp->execute();
+    <header>
+        <section id="profileInfo">
+            <img id="profilePicture" src="<?php echo $profilePicture; ?>" alt="<?php echo $profileName; ?>">
+            <p id="profileName"><?php echo $profileName; ?></p>
+        </section>
+        <nav id="topNav">
+            <ul>
+                <?php include '../dashboard/changeButtonVisibility.php' ?>
+                <li><a href="../profile/profile.php" id="profile">Profile</a></li>
+                <li><a href="../login/logout.php" id="logout" class="btn btn-warning">Log out</a></li>
+            </ul>
+        </nav>
+    </header>
+	
+	<form id="eventForm" action="addEvent.php" method="post" enctype="multipart/form-data">
+	   <label for="eventName">Event name:</label>
+	   <input type="text" id="eventName" name="eventName"><br><br>
+	   <label for="eventImg">Select image:</label>
+	   <input type="file" id="eventImg" name="eventsImg" accept="image/*"><br><br>
+	   <label for="usersNum">Event capacity:</label>
+	   <input type="number" id="usersNum" name="usersNum" min="1" max="32"><br><br>
+	   <label for="eventDesc">Description:</label>
+	   <input type="text" id="eventDesc" name="eventDesc"><br><br>
+	   <input type="submit">
+	</form>
 
-    $inp->close();
-	header('Location: ../dashboard/dashboard.php');
-	die();
-}
+    
 
-
-?>
+</body>
+</html>
