@@ -35,7 +35,7 @@
         </nav>
     </header>
 	
-	<form action="createEvent.php" method="post" enctype="multipart/form-data">
+	<form id="eventForm" action="createEvent.php" method="post" enctype="multipart/form-data">
 	   <label for="eventName">Event name:</label>
 	   <input type="text" id="eventName" name="eventName"><br><br>
 	   <label for="eventImg">Select image:</label>

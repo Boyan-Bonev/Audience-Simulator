@@ -2,7 +2,7 @@ body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    background-color: rgb(243, 239, 226);
+    background-color: rgb(255, 255, 255);
 }
 
 header {
@@ -56,4 +56,14 @@ header {
 #topNav a {
     text-decoration: none;
     color: #fff;
+}
+
+#eventForm {
+    margin: 20px;
+    border: 2px solid #ccc;
+    padding: 10px;
+}
+
+#eventName {
+    margin-top: 20px;
 }

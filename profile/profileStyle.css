@@ -2,7 +2,7 @@ body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    background-color: rgb(243, 239, 226);
+    background-color: rgb(255, 255, 255);
 	height:100%;
 }
 
@@ -79,11 +79,10 @@ hr {
 }
 
 #profPic {
-	
-	padding-left: 30px;
+	border: 1px solid #ccc;
 	width: 200px;
 	height: 200px;
-	
+    margin: 20px;
 }
 
 #info {
