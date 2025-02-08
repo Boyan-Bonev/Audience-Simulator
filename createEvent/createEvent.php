@@ -11,29 +11,28 @@ function generateRandomString($length = 10) {
     return $randomString;
 }  //func to generate random string for use in img filename, taken from https://stackoverflow.com/questions/4356289/php-random-string-generator
 
- session_start();
- $id = $_SESSION["iduser"];
-try {
-    $conn = new mysqli("localhost", "username", "password", "database");
-}
-catch (mysqli_sql_exception $e) {
-    die("Could not connect to the database: " . $e->getMessage());
+ if (session_id() == "") {
+    session_start();
 }
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!isset($_SESSION["user"])) {
+    header("Location: ../login/login.php");
+    exit;
 }
 
+require_once "../login/database.php";
+
+$email = $_SESSION["user"];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$to = generateRandomString()."_".$id;
+	$to = generateRandomString()."_".urlencode($email);
 	$imgName = $to;
 	$to = "uploads/".$to;
 	if(move_uploaded_file($_FILES["eventImg"]["tmp_name"], $to)) {
-    echo "file uploaded";
+    
     }
 	
 	else {
-         echo "Error: file upload";
+         
     }
 	$name = $_POST["eventName"];
 	$userCount = $_POST["usersNum"];
@@ -43,14 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $inp = $conn->prepare("INSERT INTO events (name,userCount,img,desc) VALUES (?,?,?,?)");
     $inp->bind_param("siss", $name, $userCount,$imgName,$desc);
 
-    if ($inp->execute()) {
-        echo "Event created.";
-    }  else {
-        echo "An error occurred: " . $inp->error;
-    }
+    $inp->execute();
 
     $inp->close();
+	header('Location: ../dashboard/dashboard.php');
+	die();
 }
 
-$conn->close();
+
 ?>

@@ -43,7 +43,7 @@ $profileData = [
 	'points' => $profilePoints,
 	'role' => $profileRole,
 ];
-
+$stmt->close();
 return $profileData;
 
 ?>
