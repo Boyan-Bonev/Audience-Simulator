@@ -23,7 +23,8 @@ try {
         photo VARCHAR(255) DEFAULT NULL,
         password VARCHAR(255) NOT NULL,
         role VARCHAR(255) NOT NULL,
-        points INT DEFAULT 0
+        points INT DEFAULT 0,
+		roomid INT DEFAULT NULL
     )";
     $conn->exec($sql);
 
@@ -38,11 +39,28 @@ try {
         description TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         ends_at DATETIME DEFAULT NULL,
-        participants VARCHAR(255) DEFAULT NULL
+        participants VARCHAR(255) DEFAULT NULL,
+		creatorid INT,
+		FOREIGN KEY (creatorid) 
+		REFERENCES registration_form.users(id)
+		ON DELETE SET NULL
     )";
+    $conn->exec($sql);
+	$sql = "CREATE TABLE actions (
+	    userid INT PRIMARY KEY,
+		action_name VARCHAR(50) NOT NULL,
+		FOREIGN KEY (userid)
+		REFERENCES registration_form.users(id)
+		ON DELETE CASCADE
+		)";
     $conn->exec($sql);
 
     $conn->exec("USE registration_form");
+	$sql = "ALTER TABLE users
+	    ADD CONSTRAINT fk_room_id FOREIGN KEY (roomid)
+		REFERENCES events.meetings(id)
+		ON DELETE SET NULL";
+    $conn->exec($sql);
 
     // Insert a sample admin user (replace password with a hashed version using password_hash())
     $password_hash = password_hash("The_Adm1n", PASSWORD_DEFAULT); 
