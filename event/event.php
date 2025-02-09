@@ -1,4 +1,5 @@
 <?php
+
     session_start();
     if(!isset($_SESSION["user"]))
     {
@@ -9,6 +10,7 @@
     $sql = "SELECT * FROM users WHERE email='$email'";
     $result = mysqli_query($conn,$sql);
     $user = mysqli_fetch_array($result,MYSQLI_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +42,7 @@
     <!-- they time the correct reaction successfully -->
     <section id="controls">
         <button onclick="openPopup('commandPopup')">Activate Command</button>
-        <button onclick="openPopup('emojiPopup')">Use an emoji</button>
+        <button onclick="openPopup('imagePopup')">Display an image</button>
         <button onclick="openPopup('soundPopup')">Play a sound</button>
         <button onclick="openPopup('videoPopup')">Play a video</button>
         <!-- connect this to the simulation mode -->
@@ -49,13 +51,41 @@
     </section>
 
     <section id="commandPopup" class="popup">
+        <section class="popup-content">
+            <span class="close-button" onclick="closePopup('commandPopup')">&times;</span>
+            <h2>Activate Command</h2>
+
+            <label for="commandSelect">Select Command:</label>
+            <select id="commandSelect">
+                <option value="clap">Clap</option>
+                <option value="stomp">Stomp</option>
+                <option value="whistle">Whistle</option>
+                <option value="throwTomatoes">Throw Tomatoes</option>
+                <option value="gasp">Gasp</option>
+                <option value="sigh">Sigh</option>
+                <option value="boo">Boo</option>
+                </select><br><br>
+
+            <label for="delayInput">Delay (seconds):   </label>
+            <input type="number" id="delayInput" value="0" min="0"><br><br>
+
+            <label for="pointsInput">Minimum Points:   </label>
+            <input type="number" id="pointsInput" value="0" min="0"><br><br>
+
+            <button onclick="activateSelectedCommand()">Activate</button>
+        </section>
+    </section>
+
+    <script src="activateCommand.js"></script>
+
+    <section id="commandPopup" class="popup">
         <h2>Activate Command</h2>
         <button onclick="closePopup('commandPopup')">Close</button>
     </section>
 
-    <section id="emojiPopup" class="popup">
-        <h2>Select Emoji</h2>
-        <button onclick="closePopup('emojiPopup')">Close</button>
+    <section id="imagePopup" class="popup">
+        <h2>Select Image</h2>
+        <button onclick="closePopup('imagePopup')">Close</button>
     </section>
 
     <section id="soundPopup" class="popup">
@@ -70,124 +100,9 @@
 
     <section class="overlay" id="overlay"></section>
 
-    <script>
-    function openPopup(popupId) {
-        document.getElementById(popupId).style.display = "block";
-        document.getElementById("overlay").style.display = "block";
-    }
+    <script src="popUpManagement.js"></script>
 
-    function closePopup(popupId) {
-        document.getElementById(popupId).style.display = "none";
-        document.getElementById("overlay").style.display = "none";
-    }
-    </script>
-
-    <script>
-        function getQueryParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
-
-        const meetingName = getQueryParam('name');
-        if (meetingName) {
-            console.log(`Connected to event:` + meetingName);
-            document.getElementById('meetingName').textContent = meetingName;
-            joinMeeting(meetingName);
-        }
-
-        // Fetch and update meeting info
-        function updateMeetingInfo() {
-            fetch(`meeting.php?meeting_name=${meetingName}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('meetingName').textContent = data.meeting.name;
-
-                        const participantsContainer = document.getElementById('participants');
-                        participantsContainer.innerHTML = '';
-
-                        const participants = JSON.parse(data.meeting.participants || '[]');
-
-                        // TODO: Have to connect it to the given participant 
-                        // in order to be able to access their photo, points and name
-                        participants.forEach(participant => {
-                            const participantSection = document.createElement('section');
-                            participantSection.classList.add('participant');
-
-                            const button = document.createElement('button');
-                            button.classList.add('plusOne');
-                            button.textContent = '+1';
-                            participantSection.appendChild(button);
-
-                            const img = document.createElement('img');
-                            img.src = 'placeholder.png';
-                            img.alt = `Profile of ${participant}`;
-                            participantSection.appendChild(img);
-
-                            // Add the section to the container
-                            participantsContainer.appendChild(participantSection);
-                        });
-                    } else {
-                        alert(data.error || 'Failed to fetch meeting info');
-                        window.location.href = "../dashboard/dashboard.php"; 
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        function joinMeeting(eventName) {
-            fetch('meeting.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `meeting_name=${encodeURIComponent(eventName)}`
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log(`Joined meeting: ${eventName}`);
-                        updateMeetingInfo();
-                    } else {
-                        alert(data.error || 'Failed to join meeting');
-                        window.location.href = "../dashboard/dashboard.php"; 
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        // Periodically refresh meeting info
-        setInterval(updateMeetingInfo, 5000);
-
-        // TODO: 
-        /*window.onbeforeunload = function() {
-            fetch('/removeUserFromMeeting.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    userId: $_SESSION["user"],
-                    meetingName: meetingName
-                })
-            });
-        };*/
-        window.onload = function() {
-            fetch(`addUserToMeeting.php?meetingName=${meetingName}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-                })
-            .then(data => {
-                console.log(data);
-                })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-                });
-        };
-
-        updateMeetingInfo();
-    </script>
+    <script src="manageMeeting.js"></script>
 
 </body>
 </html>

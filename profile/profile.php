@@ -19,21 +19,10 @@
     $profilePicture = "../userPhotos/$profilePicture";
 	$profilePoints = $profileData['points'];
 	$profileRole = $profileData['role'];
+
+    include '../header/header.php'
     ?>
 
-    <header>
-        <section id="profileInfo">
-            <img id="profilePicture" src="<?php echo $profilePicture; ?>" alt="<?php echo $profileName; ?>">
-            <p id="profileName"><?php echo $profileName; ?></p>
-        </section>
-        <nav id="topNav">
-            <ul>
-                <?php include '../dashboard/changeButtonVisibility.php' ?>
-                <li><a href="profile.php" id="profile">Profile</a></li>
-                <li><a href="../login/logout.php" id="logout" class="btn btn-warning">Log out</a></li>
-            </ul>
-        </nav>
-    </header>
  <section id="picSpace">
   <img id="profPic" src="<?php echo $profilePicture; ?>" alt="<?php echo $profileName; ?>">    
  </section>

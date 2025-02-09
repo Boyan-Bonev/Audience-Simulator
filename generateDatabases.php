@@ -39,11 +39,16 @@ try {
         description TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         ends_at DATETIME DEFAULT NULL,
+<<<<<<< HEAD
         participants VARCHAR(255) DEFAULT NULL,
 		creatorid INT,
 		FOREIGN KEY (creatorid) 
 		REFERENCES registration_form.users(id)
 		ON DELETE SET NULL
+=======
+        participantsCount INT DEFAULT 10,
+        participants VARCHAR(255) DEFAULT NULL
+>>>>>>> d3d8336639a455eed7487c1e4bea0755e1032fb9
     )";
     $conn->exec($sql);
 	$sql = "CREATE TABLE actions (

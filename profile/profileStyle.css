@@ -1,20 +1,10 @@
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: aquamarine;
-    padding: 10px 20px;
-    border-bottom: 1px solid #ccc;
-	margin-bottom: 60px;
-}
 body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    background-color: rgb(243, 239, 226);
+    background-color: rgb(255, 255, 255);
 	height:100%;
 }
-
 
 hr {
     display: block;
@@ -24,52 +14,26 @@ hr {
     margin: 1em 0;
     padding: 0;
 }
-#username {
-	padding-top: 120px;
-}
-#profileInfo {
-    display: flex;
-    align-items: center;
-}
+
 #picSpace {
 	float:left;
 	width: 20%;
 	height: 100%;
-	
 }
-#profilePicture {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: white;
-    margin-right: 10px;
-    text-align: center;
+
+#username {
+	padding-top: 120px;
 }
+
 #profPic {
-	
-	padding-left: 30px;
+	border: 1px solid #ccc;
 	width: 200px;
 	height: 200px;
-	
+    margin: 20px;
 }
+
 #info {
 	float:left;
 	width: 50%;
 	height:100%;
-}
-
-#topNav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-#topNav li {
-    margin-left: 20px;
-}
-
-#topNav a {
-    text-decoration: none;
-    color: #333;
 }

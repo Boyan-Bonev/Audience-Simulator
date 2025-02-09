@@ -1,4 +1,5 @@
 <?php
+
 if (session_id() == "") {
     session_start();
 }
@@ -25,7 +26,7 @@ if (!$user) {
     $profileName = htmlspecialchars($user['name']);
     $profilePicture = htmlspecialchars($user['photo']);
     if ($profilePicture === null || $profilePicture === "") {
-        $profilePicture = "default_profile.jpg";
+        $profilePicture = "placeholder.jpg";
     }
 }
 
