@@ -25,6 +25,9 @@
             $email = $_POST["email"];
             $password = $_POST["password"];
             $passwordRepeat = $_POST["repeat_password"];
+            $image = "placeholder.jpg";
+            $role = "normal";
+            $points = 0;
 
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
             $errors = array();
@@ -65,12 +68,13 @@
             else
             {
                 
-                $sql = "INSERT INTO users (name,email,password) VALUES (? ,? ,? );";
+                $sql = "INSERT INTO users (name,email,photo,password,role,points) VALUES (?,?,?,?,?,?);";
                 $stmt = mysqli_stmt_init($conn);
                 $prepareStmt = mysqli_stmt_prepare($stmt,$sql);
+                
                 if($prepareStmt)
                 {
-                    mysqli_stmt_bind_param($stmt,"sss",$name,$email,$passwordHash);
+                    mysqli_stmt_bind_param($stmt,"sssssi",$name,$email,$image,$passwordHash,$role,$points);
                     mysqli_stmt_execute($stmt);
                     echo "<div class='alert alert-success'>You are registered successfully!</div>";
                 }
