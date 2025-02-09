@@ -1,4 +1,5 @@
 <?php
+
 $profileData = include '../dashboard/profileData.php'; 
 
 if ($profileData === false) {
@@ -8,6 +9,7 @@ if ($profileData === false) {
 $profileName = $profileData['name'];
 $profilePicture = $profileData['picture'];
 $profilePicture = "../userPhotos/$profilePicture";
+
 ?>
 
 <header>
@@ -24,6 +26,10 @@ $profilePicture = "../userPhotos/$profilePicture";
     </nav>
 </header>
 
-<script src="addStylization.js">
-    addStylization("headerStyles");
+<script>
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = '../header/headerStyle.css';
+    document.head.appendChild(link);
 </script>

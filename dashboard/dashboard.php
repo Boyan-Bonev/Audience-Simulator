@@ -26,6 +26,7 @@
     ?>
 
     <?php
+    
     try {
         $conn = new mysqli("localhost", "root", "", "events");
     }
@@ -55,6 +56,7 @@
     }
 
     $conn->close();
+
     ?>
 
     <section id="bottomSection">
