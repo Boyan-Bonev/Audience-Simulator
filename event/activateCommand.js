@@ -31,5 +31,5 @@ function displayCommand(command, duration) {
             commandText.textContent = "";
             countdownDisplay.textContent = "";
         }
-    }, 1000); // Update every second
+    }, 1000); // update every second
 }

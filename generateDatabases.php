@@ -45,7 +45,7 @@ try {
 
     $conn->exec("USE registration_form");
 
-    // Insert a sample admin user (replace password with a hashed version using password_hash())
+    // Sample admin user
     $password_hash = password_hash("The_Adm1n", PASSWORD_DEFAULT); 
     $sql = "INSERT INTO users (name, email, photo, password, role, points)
             VALUES ('admin', 'admin@abv.bg', 'admin.jpg', '$password_hash', 'admin', 999)";

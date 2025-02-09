@@ -19,7 +19,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="meetingName">Event Page</title>
-    <link rel="stylesheet" href="eventStyles.css">
+    <link rel="stylesheet" href="eventStyle.css">
 </head>
 <body>
     <!-- make it live! -->
@@ -64,7 +64,7 @@
                 <option value="gasp">Gasp</option>
                 <option value="sigh">Sigh</option>
                 <option value="boo">Boo</option>
-                </select><br><br>
+            </select><br><br>
 
             <label for="delayInput">Delay (seconds):   </label>
             <input type="number" id="delayInput" value="0" min="0"><br><br>
@@ -77,6 +77,28 @@
     </section>
 
     <script src="activateCommand.js"></script>
+
+    <section id="imagePopup" class="popup">
+        <section class="popup-content">
+            <span class="close-button" onclick="closePopup('imagePopup')">&times;</span>
+            <h2>Activate Command</h2>
+
+            <label for="imageSelect">Select Image:</label>
+            <select id="imageSelect">
+                <option value="clap">Clap</option>
+                <option value="stomp">Stomp</option>
+                <option value="whistle">Whistle</option>
+                <option value="throwTomatoes">Throw Tomatoes</option>
+                <option value="gasp">Gasp</option>
+                <option value="sigh">Sigh</option>
+                <option value="boo">Boo</option>
+            </select><br><br>
+
+            <button onclick="displayImage()">Display</button>
+        </section>
+    </section>
+
+    <script src="displayImage.js"></script>
 
     <section id="commandPopup" class="popup">
         <h2>Activate Command</h2>

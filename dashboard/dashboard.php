@@ -17,7 +17,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Dashboard</title>
-    <link rel="stylesheet" href="dashboardStyles.css">
+    <link rel="stylesheet" href="dashboardStyle.css">
 </head>
 <body>
     
