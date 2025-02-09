@@ -1,81 +1,24 @@
-body {
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: rgb(255, 255, 255);
-}
-
-header {
-    display: flex;
-    color: #fff;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgb(197, 8, 55);
-    padding: 10px 20px;
-    border-bottom: 1px solid #ccc;
-}
-
-#logout {
-    background-color: #1dc70a; 
-    color: #172b1d; 
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    border-radius: 5px;
-    padding: 10px 10px; 
-}
-
-#logout:hover {
-    background-color: #1db30d; 
-}
-
-#profileInfo {
-    display: flex;
-    align-items: center;
-
-}
-
-#profilePicture {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: white;
-    margin-right: 10px;
-    text-align: center;
-}
-
-#topNav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-#topNav li {
-    margin-left: 20px;
-}
-
-#topNav a {
-    text-decoration: none;
-    color: #fff;
-}
-
 .events {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    padding: 20px;
+    padding: 20px;  
+    overflow: hidden;
 }
 
 .eventCard {
     border: 1px solid #ccc;
-    padding: 10px;
     text-align: center; 
     text-decoration: none;
     color: black;
     border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
     height: 200px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-
+    transition: transform 0.3s ease, box-shadow 0.3s ease;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .eventCard:hover {
@@ -83,9 +26,20 @@ header {
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
+.eventCard h3 {
+   margin: 5px;
+   padding-bottom: 5px;
+}
+
+.eventCard p {
+    padding-top: 5px;
+    margin: 5px;
+}
+
 .eventCard img {
-    max-width: 100%;
-    height: auto;
+    width: 100%;
+    height: 125px;
+    object-fit:scale-down;
 }
 
 #bottomSection {
@@ -95,7 +49,6 @@ header {
     float: right;
     text-align: end;
 }
-
 
 #eventConnectForm {
     border: 1px solid #ccc;
