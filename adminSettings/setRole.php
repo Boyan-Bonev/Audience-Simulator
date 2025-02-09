@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role = $_POST["role"];
 
     $stmt = $conn->prepare("UPDATE users SET role = ? WHERE name = ?");
-    $stmt->bind_param("si", $role, $user);
+    $stmt->bind_param("ss", $role, $user);
 
     if ($stmt->execute()) {
         echo "Role updated successfully.";
