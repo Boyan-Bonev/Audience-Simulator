@@ -8,8 +8,10 @@ try {
     $conn = new PDO("mysql:host=$servername", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "DROP DATABASE IF EXISTS registration_form;
-            DROP DATABASE IF EXISTS events;";
+    $sql = "SET foreign_key_checks = 0; 
+	        DROP DATABASE IF EXISTS registration_form;
+            DROP DATABASE IF EXISTS events;
+			SET foreign_key_checks = 1";
     $conn->exec($sql);
 
     $sql = "CREATE DATABASE registration_form";
@@ -44,7 +46,7 @@ try {
 	creatorid INT,
 	FOREIGN KEY (creatorid) 
 	REFERENCES registration_form.users(id)
-	ON DELETE SET NULL
+	
     )";
    $conn->exec($sql);
    $sql = "CREATE TABLE actions (
@@ -52,23 +54,25 @@ try {
 	action_name VARCHAR(50) NOT NULL,
 	FOREIGN KEY (userid)
 	REFERENCES registration_form.users(id)
-	ON DELETE CASCADE
+	
 		)";
    $conn->exec($sql);
-
+   
    $conn->exec("USE registration_form");
    $sql = "ALTER TABLE users
 	   ADD CONSTRAINT fk_room_id FOREIGN KEY (roomid)
 	   REFERENCES events.meetings(id)
-	   ON DELETE SET NULL";
+	   ";
    $conn->exec($sql);
 
     // Sample admin user
     $password_hash = password_hash("The_Adm1n", PASSWORD_DEFAULT); 
-    $sql = "INSERT INTO users (name, email, photo, password, role, points)
-            VALUES ('admin', 'admin@abv.bg', 'admin.jpg', '$password_hash', 'admin', 999)";
+    $sql = "INSERT INTO users (name, email, photo, password, role, points,roomid)
+            VALUES ('admin', 'admin@abv.bg', 'admin.jpg', '$password_hash', 'admin', 999,NULL)";
     $conn->exec($sql);
-
+	$sql = "INSERT INTO events.meetings (name,photo,description,participants,creatorid)
+	        VALUES ('test','test.jpg','mysql > mariadb','admin',1)";
+	$conn->exec($sql);
     echo "Databases and tables created successfully!";
 
 } catch(PDOException $e) {
