@@ -41,6 +41,8 @@ if ($result->num_rows > 0) {
         $updateStmt->execute();
 
         echo "User added to meeting successfully."; 
+
+        $updateStmt->close();
     } else {
         echo "User is already in the meeting.";
     }
@@ -49,7 +51,6 @@ if ($result->num_rows > 0) {
 }
 
 $stmt->close();
-$updateStmt->close();
 $conn->close();
 
 ?>

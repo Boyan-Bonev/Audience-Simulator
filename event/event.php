@@ -30,14 +30,11 @@
     </section>
 
     <!-- dynamically adds participants instead of statically-->
-    <!-- make it so if they play a noise, use an emoji or play a video -->
-    <!-- it appears for everyone live -->
-    <!-- same goes for the +1 button -->
-    <section id="participants">
-    </section>
+    <section id="participants"></section>
+    <script src="manageMeeting.js"></script>
 
-    <!-- create the popups and link the entered information -->
-    <!-- to the event page -->
+    <section class="overlay" id="overlay"></section>
+    <script src="popUpManagement.js"></script>
     <!-- make it so the user gains a point if -->
     <!-- they time the correct reaction successfully -->
     <section id="controls">
@@ -51,8 +48,8 @@
     </section>
 
     <section id="commandPopup" class="popup">
-        <section class="popup-content">
-            <span class="close-button" onclick="closePopup('commandPopup')">&times;</span>
+        <section class="popupContent">
+            <span class="closeButton" onclick="closePopup('commandPopup')">&times;</span>
             <h2>Activate Command</h2>
 
             <label for="commandSelect">Select Command:</label>
@@ -66,10 +63,10 @@
                 <option value="boo">Boo</option>
             </select><br><br>
 
-            <label for="delayInput">Delay (seconds):   </label>
+            <label for="delayInput">Delay (seconds): </label>
             <input type="number" id="delayInput" value="0" min="0"><br><br>
 
-            <label for="pointsInput">Minimum Points:   </label>
+            <label for="pointsInput">Minimum Points: </label>
             <input type="number" id="pointsInput" value="0" min="0"><br><br>
 
             <button onclick="activateSelectedCommand()">Activate</button>
@@ -79,9 +76,9 @@
     <script src="activateCommand.js"></script>
 
     <section id="imagePopup" class="popup">
-        <section class="popup-content">
-            <span class="close-button" onclick="closePopup('imagePopup')">&times;</span>
-            <h2>Activate Command</h2>
+        <section class="popupContent">
+            <span class="closeButton" onclick="closePopup('imagePopup')">&times;</span>
+            <h2>Display an image</h2>
 
             <label for="imageSelect">Select Image:</label>
             <select id="imageSelect">
@@ -100,31 +97,59 @@
 
     <script src="displayImage.js"></script>
 
-    <section id="commandPopup" class="popup">
-        <h2>Activate Command</h2>
-        <button onclick="closePopup('commandPopup')">Close</button>
-    </section>
-
-    <section id="imagePopup" class="popup">
-        <h2>Select Image</h2>
-        <button onclick="closePopup('imagePopup')">Close</button>
-    </section>
-
     <section id="soundPopup" class="popup">
-        <h2>Play Sound</h2>
-        <button onclick="closePopup('soundPopup')">Close</button>
+        <section class="popupContent">
+            <span class="closeButton" onclick="closePopup('soundPopup')">&times;</span>
+            <h2>Play a sound</h2>
+
+            <label for="soundSelect">Select Sound:</label>
+            <select id="soundSelect">
+                <option value="clap">Clap</option>
+                <option value="stomp">Stomp</option>
+                <option value="whistle">Whistle</option>
+                <option value="throwTomatoes">Throw Tomatoes</option>
+                <option value="gasp">Gasp</option>
+                <option value="sigh">Sigh</option>
+                <option value="boo">Boo</option>
+            </select><br><br>
+
+            <label for="volumeSlider">Volume:</label>
+            <input type="range" id="volumeSlider" min="0" max="100" value="50">
+            <span id="volumeValue">50</span><br><br>
+
+            <button onclick="playSound()">Play</button>
+        </section>
     </section>
+
+    <script src="playSound.js"></script>
 
     <section id="videoPopup" class="popup">
-        <h2>Play Video</h2>
-        <button onclick="closePopup('videoPopup')">Close</button>
+        <section class="popupContent">
+            <span class="closeButton" onclick="closePopup('videoPopup')">&times;</span>
+            <h2>Play a video</h2>
+
+            <label for="videoSelect">Select Video:</label>
+            <select id="videoSelect">
+                <option value="clap">Clap</option>
+                <option value="stomp">Stomp</option>
+                <option value="whistle">Whistle</option>
+                <option value="throwTomatoes">Throw Tomatoes</option>
+                <option value="gasp">Gasp</option>
+                <option value="sigh">Sigh</option>
+                <option value="boo">Boo</option>
+            </select><br><br>
+
+            <label for="videoSpeed">Video Speed:</label>
+            <input type="number" id="videoSpeed" min="0.5" max="2.0" step="0.1" value="1.0"><br><br>
+
+            <label for="videoVolume">Volume:</label>
+            <input type="range" id="videoVolume" min="0" max="100" value="50">
+            <span id="videoVolumeValue">50</span><br><br>    
+
+            <button onclick="playVideo()">Play</button>
+        </section>
     </section>
 
-    <section class="overlay" id="overlay"></section>
-
-    <script src="popUpManagement.js"></script>
-
-    <script src="manageMeeting.js"></script>
-
+    <script src="playVideo.js"></script>
 </body>
 </html>
