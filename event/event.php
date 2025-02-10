@@ -11,6 +11,13 @@
     $result = mysqli_query($conn,$sql);
     $user = mysqli_fetch_array($result,MYSQLI_ASSOC);
 
+    $seats = [];
+    $seatQuery = "SELECT row_pos, col_pos, user FROM seating WHERE event_id = 'some_event_id'";
+    $seatResult = mysqli_query($conn, $seatQuery);
+    while ($seat = mysqli_fetch_assoc($seatResult)) {
+        $seats[] = $seat;
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -20,17 +27,115 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="meetingName">Event Page</title>
     <link rel="stylesheet" href="eventStyle.css">
+
+    <link rel="stylesheet" href="eventStyles.css">
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 50px);
+            gap: 5px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .seat {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: lightgray;
+            cursor: pointer;
+            font-size: 24px;
+            border-radius: 5px;
+            user-select: none;
+            transition: background-color 0.3s;
+        }
+        .seat.taken {
+            background-color: red;
+            pointer-events: none;
+        }
+        .seat.selected {
+            background-color: green;
+        }
+    </style>
 </head>
 <body>
-    <!-- make it live! -->
-
     <!-- connect it to the currently active command -->
     <section id="commandDisplay">
         Command: <span id="commandText"></span> | Time Left: <span id="countdown"></span>
     </section>
 
+    <div id="seatingGrid" class="grid"></div>
+
+    <script>
+        const rows = 5;
+        const cols = 10;
+        const seatingGrid = document.getElementById("seatingGrid");
+        let selectedSeat = null;
+        const occupiedSeats = <?php echo json_encode($seats); ?>;
+
+        function createGrid() {
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    let seat = document.createElement("div");
+                    seat.classList.add("seat");
+                    seat.dataset.row = r;
+                    seat.dataset.col = c;
+                    seat.innerText = "🪑";
+                    
+                    let takenSeat = occupiedSeats.find(s => s.row_pos == r && s.col_pos == c);
+                    if (takenSeat) {
+                        seat.classList.add("taken");
+                        seat.innerText = "🚫";
+                    } else {
+                        seat.addEventListener("click", selectSeat);
+                    }
+                    seatingGrid.appendChild(seat);
+                }
+            }
+        }
+        
+        function selectSeat(event) {
+            if (selectedSeat) {
+                selectedSeat.classList.remove("selected");
+                selectedSeat.innerText = "🪑";
+            }
+            
+            let seat = event.target;
+            let row = seat.dataset.row;
+            let col = seat.dataset.col;
+            selectedSeat = seat;
+            seat.classList.add("selected");
+            seat.innerText = "😀";
+            
+            fetch('saveSeat.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `row=${row}&col=${col}&user=<?php echo $user['email']; ?>`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    alert(data.message);
+                    seat.classList.remove("selected");
+                    seat.innerText = "🪑";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        
+        function openPopup(popupId) {
+            alert(`${popupId} activated!`); // Placeholder for popup functionality
+        }
+        
+        createGrid();
+    </script>
+    <!-- make it live! -->
+
+    
+
     <!-- dynamically adds participants instead of statically-->
-    <section id="participants"></section>
+
     <script src="manageMeeting.js"></script>
 
     <section class="overlay" id="overlay"></section>
