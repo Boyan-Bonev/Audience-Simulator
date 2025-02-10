@@ -35,7 +35,7 @@ function updateMeetingInfo() {
                     participantSection.appendChild(button);
 
                     const img = document.createElement('img');
-                    img.src = 'placeholder.png';
+                    img.src = '../userPhotos/placeholder.jpg';
                     img.alt = `Profile of ${participant}`;
                     participantSection.appendChild(img);
 
