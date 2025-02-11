@@ -46,6 +46,7 @@ try {
         participants VARCHAR(255) DEFAULT NULL,
         currentCommand VARCHAR(32) DEFAULT NULL,
         commandWantedAt DATETIME DEFAULT NULL,
+        commandMinPoints INT DEFAULT 0,
         creatorid INT,
         FOREIGN KEY (creatorid) 
         REFERENCES registration_form.users(id)
