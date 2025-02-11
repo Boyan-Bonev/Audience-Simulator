@@ -3,7 +3,5 @@ function activateSelectedCommand() {
     const delay = parseInt(document.getElementById("delayInput").value);
     const minPoints = parseInt(document.getElementById("pointsInput").value);
 
-    
 
-    closePopup('commandPopup');
 }
