@@ -3,7 +3,7 @@ const videoType = urlParams.get('type');
 const videoVolume = urlParams.get('volume');
 const videoPlayer = document.getElementById('videoPlayer');
 
-if (videoType && videoSpeed && videoVolume) {
+if (videoType && videoVolume) {
   const videoPath = "../../reactionClips/" + videoType + ".mp4";
   videoPlayer.src = videoPath;
   videoPlayer.volume = videoVolume;

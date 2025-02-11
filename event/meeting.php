@@ -1,33 +1,33 @@
 <?php
 
-$dsn = "mysql:host=localhost;dbname=events;charset=utf8mb4";
-$username = "root";
-$password = "";
+    require_once '../connectToEvents.php';
 
-try {
-    $pdo = new PDO($dsn, $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (Exception $e) {
-    echo json_encode(['error' => 'Database connection failed']);
-    exit;
-}
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $meetingName = $_GET['meeting_name'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $meetingName = $_GET['meeting_name'];
+        $stmt = $mysqli->prepare("SELECT * FROM meetings WHERE name = ?");
+        $stmt->bind_param("s", $meetingName);
 
-    $stmt = $pdo->prepare("SELECT * FROM meetings WHERE name = :name");
-    $stmt->execute(['name' => $meetingName]);
-    $meeting = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$stmt->execute()) {
+            echo json_encode(['error' => 'Error executing query: ' . $stmt->error]);
+            exit;
+        }
 
-    if (!$meeting) {
-        echo json_encode(['error' => 'Meeting not found']);
+        $result = $stmt->get_result();
+        $meeting = $result->fetch_assoc();
+
+        if (!$meeting) {
+            echo json_encode(['error' => 'Meeting not found']);
+            exit;
+        }
+
+        echo json_encode(['success' => true, 'meeting' => $meeting]);
         exit;
+
     }
 
-    echo json_encode(['success' => true, 'meeting' => $meeting]);
-    exit;
-}
+    echo json_encode(['error' => 'Invalid request']);
 
-echo json_encode(['error' => 'Invalid request']);
-
+    $mysqli->close();
+    
 ?>

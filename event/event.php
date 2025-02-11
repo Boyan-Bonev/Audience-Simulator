@@ -6,6 +6,7 @@
         header("Location: ../login/login.php");
     }
     require_once "../login/database.php";
+
     $email = $_SESSION["user"];
     $userId = $_SESSION["userId"];
     $sql = "SELECT * FROM users WHERE email='$email'";
@@ -26,6 +27,7 @@
     $rows = $meetingRow['row_num'];
     $cols = $meetingRow['col_num'];
     $creatorid =$meetingRow['creatorid'];
+
 ?>
 
 <!DOCTYPE html>
@@ -43,166 +45,41 @@
 
     <section id="seatingGrid" class="grid"></section>
 
+    <script src="activateCommand.js"></script>
+
+    <script src="manageMeeting.js"></script> </head>
     <script>
-        const seatingGrid = document.getElementById("seatingGrid");
-        const rows = <?php echo (int)$rows?>;
-        const cols = <?php echo (int)$cols?>;
-        let selectedSeat = null;
+        document.addEventListener('DOMContentLoaded', () => {
+            const seatingGrid = document.getElementById("seatingGrid");
+            const rows = <?php echo (int)$rows?>;
+            const cols = <?php echo (int)$cols?>;
+            const meetingName = "<?php echo htmlspecialchars($meetingName); ?>";
+            const userEmail = "<?php echo $user['email']; ?>";
+            const creatorId = <?php echo (int)$creatorid?>;
+            const userId = <?php echo (int)$userId?>;
 
+            createGrid(seatingGrid, rows, cols, meetingName, userEmail);
+            updateMeetingInfo(meetingName);
+            setInterval(() => updateMeetingInfo(meetingName), 1000);
 
-        const meetingName = "<?php echo htmlspecialchars($meetingName); ?>";
-        const userEmail = "<?php echo $user['email']; ?>"; 
-
-        // Function to create the seating grid
-        function createGrid() {
-            seatingGrid.innerHTML = ""; 
-            seatingGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-
-            for (let r = 0; r < rows; r++) {
-                for (let c = 0; c < cols; c++) {
-                    let seat = document.createElement("section");
-                    seat.classList.add("seat");
-                    seat.dataset.row = r;
-                    seat.dataset.col = c;
-                    seat.innerText = "🪑";
-                    seat.addEventListener("click", selectSeat);
-                    seatingGrid.appendChild(seat);
-                }
-            }
-        }
-
-        // fetch seat updates every 2 seconds
-        function fetchUpdatedSeats() {
-            fetch(`fetchSeats.php?name=${encodeURIComponent(meetingName)}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.querySelectorAll('.seat').forEach(seat => {
-                        let row = seat.dataset.row;
-                        let col = seat.dataset.col;
-                        let takenSeat = data.find(s => s.row_pos == row && s.col_pos == col);
-
-                if (takenSeat) {
-                    seat.classList.add("taken");
-                    // seat.innerText = "🚫";
-                    seat.innerText = " ";
-                    seat.removeEventListener("click", selectSeat);
-                } else if (!seat.classList.contains("selected")) {
-                    seat.classList.remove("taken");
-                    seat.innerText = "🪑";
-                    seat.addEventListener("click", selectSeat);
-                }
+            activateCommandButton.addEventListener('click', () => {
+                activateSelectedCommand(meetingName);
             });
-        })
-        .catch(error => console.error('Error fetching seat updates:', error));
-}
 
-        function selectSeat(event) {
-            let seat = event.target;
-            let row = seat.dataset.row;
-            let col = seat.dataset.col;
-
-            if (selectedSeat) {
-                let prevRow = selectedSeat.dataset.row;
-                let prevCol = selectedSeat.dataset.col;
-
-                fetch(`deselectSeat.php?name=${encodeURIComponent(meetingName)}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `row=${prevRow}&col=${prevCol}&user=${encodeURIComponent(userEmail)}`
-                }).catch(error => console.error('Error:', error));
-
-                selectedSeat.classList.remove("selected");
-                selectedSeat.innerText = "🪑";
+            if (creatorId != userId) {
+                document.getElementById('buttonForActivatingCommands').style.display = "none";
             }
-
-    // Now, select the new seat
-    selectedSeat = seat;
-    seat.classList.add("selected");
-    // seat.innerText = "😀";
-    seat.innerText = " ";
-
-            fetch(`saveSeat.php?name=${encodeURIComponent(meetingName)}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `row=${row}&col=${col}&user=${encodeURIComponent(userEmail)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    alert(data.message);
-                    seat.classList.remove("selected");
-                    seat.innerText = "🪑";
-                } else {
-                    fetchUpdatedSeats();
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        function handleUserLeaving() {
-            if (selectedSeat) {
-                let row = selectedSeat.dataset.row;
-                let col = selectedSeat.dataset.col;
-
-                fetch(`releaseSeat.php?name=${encodeURIComponent(meetingName)}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `row=${row}&col=${col}&user=${encodeURIComponent(userEmail)}`
-                })
-                .catch(error => console.error('Error releasing seat:', error));
-            }
-        }
-
-        window.addEventListener('beforeunload', handleUserLeaving);
-        window.addEventListener('unload', handleUserLeaving); // Extra safety measure
-
-        createGrid();
-        fetchUpdatedSeats();
-        setInterval(fetchUpdatedSeats, 2000);
-
-        // Fetch and update meeting info
-        function updateMeetingInfo() {
-            fetch(`meeting.php?meeting_name=${meetingName}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('meetingName').textContent = data.meeting.name;
-
-                        const wantedAt = new Date(data.meeting.commandWantedAt);
-                        const currentTime = new Date();
-                        const diffInMilliseconds = wantedAt.getTime() - currentTime.getTime();
-                        if (!isNaN(wantedAt) && diffInMilliseconds > 0) {
-                            document.getElementById('commandText').textContent = data.meeting.currentCommand;
-                            document.getElementById('countdown').textContent = Math.round(diffInMilliseconds / 1000);
-                        } else {
-                            document.getElementById('commandText').textContent = "";
-                            document.getElementById('countdown').textContent = "";
-                        }
-                    } else {
-                        alert(data.error || 'Failed to fetch meeting info');
-                        window.location.href = "../dashboard/dashboard.php"; 
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        // Periodically refresh meeting info
-        setInterval(updateMeetingInfo, 1000);
-
-        updateMeetingInfo();
+        });
     </script>
 
     <section class="overlay" id="overlay"></section>
     <script src="popUpManagement.js"></script>
 
     <section id="controls">
-        <button id="activateCommandButton" onclick="openPopup('commandPopup')">Activate Command</button>
+        <button id="buttonForActivatingCommands" onclick="openPopup('commandPopup')">Activate Command</button>
         <button onclick="openPopup('imagePopup')">Display an image</button>
         <button onclick="openPopup('soundPopup')">Play a sound</button>
         <button onclick="openPopup('videoPopup')">Play a video</button>
-        <!-- connect this to the simulation mode -->
-        <!-- that's connected to the user's profile --> 
-        <label>Simulate: <input type="checkbox"></label>
     </section>
 
     <section id="commandPopup" class="popup">
@@ -231,22 +108,6 @@
         </section>
     </section>
     
-    <script>
-        const creatorId = <?php echo (int)$creatorid?>;
-        const userId = <?php echo (int)$userId?>;
-        if (creatorId != userId) {
-            document.getElementById('activateCommandButton').style.display = "none";
-        }
-    </script>
-
-    <script> 
-        activateCommandButton.addEventListener('click', () => {
-            activateSelectedCommand(meetingName);
-        });
-    </script>
-
-    <script src="activateCommand.js"></script>
-
     <section id="imagePopup" class="popup">
         <section class="popupContent">
             <span class="closeButton" onclick="closePopup('imagePopup')">&times;</span>

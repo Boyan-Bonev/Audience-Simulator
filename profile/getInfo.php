@@ -20,7 +20,7 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
     $profileName = "User Not Found";
-    $profilePicture = "default_profile.jpg";
+    $profilePicture = "n/a";
 	$profilePoints = -1;
 	$profileRole = "User";
 	

@@ -1,15 +1,6 @@
 <?php
 
-try {
-    $conn = new mysqli("localhost", "root", "", "registration_form");
-}
-catch (mysqli_sql_exception $e) {
-    die("Could not connect to the database: " . $e->getMessage());
-}
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once '../login/database.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $_POST["user"];
