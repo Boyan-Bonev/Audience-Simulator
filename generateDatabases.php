@@ -43,40 +43,52 @@ try {
         ends_at DATETIME DEFAULT NULL,
         participantsCount INT DEFAULT 10,
         participants VARCHAR(255) DEFAULT NULL,
-	creatorid INT,
-	FOREIGN KEY (creatorid) 
-	REFERENCES registration_form.users(id)
-	
+        currentCommand VARCHAR(32) DEFAULT NULL,
+        commandWantedAt DATETIME DEFAULT NULL,
+        creatorid INT,
+        FOREIGN KEY (creatorid) 
+        REFERENCES registration_form.users(id)
+        
     )";
-   $conn->exec($sql);
-   $sql = "CREATE TABLE actions (
-	userid INT PRIMARY KEY,
-	action_name VARCHAR(50) NOT NULL,
-	FOREIGN KEY (userid)
-	REFERENCES registration_form.users(id)
-	
-		)";
-   $conn->exec($sql);
+
+    $conn->exec($sql);
+    $sql = "CREATE TABLE actions (
+    userid INT PRIMARY KEY,
+    action_name VARCHAR(50) NOT NULL,
+    FOREIGN KEY (userid)
+    REFERENCES registration_form.users(id)
+    
+        )";
+    $conn->exec($sql);
    
-   $conn->exec("USE registration_form");
-   $sql = "ALTER TABLE users
-	   ADD CONSTRAINT fk_room_id FOREIGN KEY (roomid)
-	   REFERENCES events.meetings(id)
-	   ";
-   $conn->exec($sql);
+    $conn->exec("USE registration_form");
+    $sql = "ALTER TABLE users
+        ADD CONSTRAINT fk_room_id FOREIGN KEY (roomid)
+        REFERENCES events.meetings(id)
+        ";
+    $conn->exec($sql);
+
+    $sql = "CREATE TABLE seating (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        row_pos INT NOT NULL,
+        col_pos INT NOT NULL,
+        user VARCHAR(255) NOT NULL,
+        event_id INT NOT NULL,
+        FOREIGN KEY (event_id) REFERENCES events.meetings(id) ON DELETE CASCADE
+    )";
+    $conn->exec($sql);
 
     // Sample admin user
     $password_hash = password_hash("The_Adm1n", PASSWORD_DEFAULT); 
     $sql = "INSERT INTO users (name, email, photo, password, role, points,roomid)
             VALUES ('admin', 'admin@abv.bg', 'admin.jpg', '$password_hash', 'admin', 999,NULL)";
     $conn->exec($sql);
-	$sql = "INSERT INTO events.meetings (name,photo,description,participants,creatorid)
-	        VALUES ('test','test.jpg','mysql > mariadb','admin',1)";
-	$conn->exec($sql);
-    echo "Databases and tables created successfully!";
 
+    echo "Databases and tables created successfully!";
 } catch(PDOException $e) {
     echo "Error creating databases and tables: " . $e->getMessage();
 }
 
 $conn = null;
+
+?>

@@ -17,30 +17,15 @@ function updateMeetingInfo() {
         .then(data => {
             if (data.success) {
                 document.getElementById('meetingName').textContent = data.meeting.name;
-
-                const participantsContainer = document.getElementById('participants');
-                participantsContainer.innerHTML = '';
-
-                const participants = JSON.parse(data.meeting.participants || '[]');
-
-                // TODO: Have to connect it to the given participant 
-                // in order to be able to access their photo, points and name
-                participants.forEach(participant => {
-                    const participantSection = document.createElement('section');
-                    participantSection.classList.add('participant');
-
-                    const button = document.createElement('button');
-                    button.classList.add('plusOne');
-                    button.textContent = '+1';
-                    participantSection.appendChild(button);
-
-                    const img = document.createElement('img');
-                    img.src = '../userPhotos/placeholder.jpg';
-                    img.alt = `Profile of ${participant}`;
-                    participantSection.appendChild(img);
-
-                    participantsContainer.appendChild(participantSection);
-                });
+                document.getElementById('commandText').textContent = data.meeting.currentCommand;
+                const wantedAt = new Date(data.meeting.commandWantedAt);
+                const currentTime = new Date();
+                const diffInMilliseconds = wantedAt.getTime() - currentTime.getTime();
+                if (!isNaN(wantedAt) && diffInMilliseconds > 0) {
+                    document.getElementById('countdown').textContent = diffInMilliseconds;
+                } else {
+                    document.getElementById('countdown').textContent = "";
+                }
             } else {
                 alert(data.error || 'Failed to fetch meeting info');
                 window.location.href = "../dashboard/dashboard.php"; 
@@ -69,7 +54,7 @@ function joinMeeting(eventName) {
 }
 
 // Periodically refresh meeting info
-setInterval(updateMeetingInfo, 5000);
+setInterval(updateMeetingInfo, 1000);
 
 // TODO: 
 /*window.onbeforeunload = function() {
