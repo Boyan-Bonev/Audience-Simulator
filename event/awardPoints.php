@@ -1,13 +1,18 @@
 <?php
   
+  session_start();
+  
+   
+  require_once "../login/database.php";
   $st = $conn->prepare("SELECT id FROM registration_form.users WHERE email = ?");
-  $st->bindparam("s",$_SESSION["user"]);
-  $res = $st->execute();
-  $r = mysqli_fetch_assoc($res);
+  $st->bind_param("s",$_SESSION["user"]);
+  $st->execute();
+  $result = $st->get_result();
+  $r = $result->fetch_assoc();
   $id = $r['id'];
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		
-	$command = $_POST["command"];
+	$command = json_decode(file_get_contents('php://input'), true)['command'];
 	
 	
 

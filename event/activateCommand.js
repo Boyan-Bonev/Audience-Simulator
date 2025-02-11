@@ -32,12 +32,13 @@ function displayCommand(command, duration) {
             countdownDisplay.textContent = "";
         }
     }, 1000);
-	const data = {command:command}
+	const data = {"command":command}
     fetch("awardPoints.php",{
   method: "POST",
-  body: JSON.stringify(data),
   headers: {
-    "Content-Type": "application/json; charset=UTF-8"
+    "Content-Type": "application/json"
   }
+  body: JSON.stringify(data),
+  
 });	
 }
