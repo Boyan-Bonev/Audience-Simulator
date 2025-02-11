@@ -32,6 +32,7 @@
                     {
                         session_start();
                         $_SESSION["user"]=$user["email"];
+                        $_SESSION["userId"]=$user["id"];
                         header("Location: ../dashboard/dashboard.php");
                         die();
                     }

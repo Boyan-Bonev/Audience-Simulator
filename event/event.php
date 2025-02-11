@@ -7,6 +7,7 @@
     }
     require_once "../login/database.php";
     $email = $_SESSION["user"];
+    $userId = $_SESSION["userId"];
     $sql = "SELECT * FROM users WHERE email='$email'";
     $result = mysqli_query($conn,$sql);
     $user = mysqli_fetch_array($result,MYSQLI_ASSOC);
@@ -19,11 +20,12 @@
     }
 
     $meetingName = $_GET['name'];
-    $meetingQuery = "SELECT row_num,col_num FROM events.meetings WHERE name = '$meetingName' LIMIT 1";
+    $meetingQuery = "SELECT row_num,col_num,creatorid FROM events.meetings WHERE name = '$meetingName' LIMIT 1";
     $resultMeeting = mysqli_query($conn,$meetingQuery);
     $meetingRow = mysqli_fetch_assoc($resultMeeting);
     $rows = $meetingRow['row_num'];
     $cols = $meetingRow['col_num'];
+    $creatorid =$meetingRow['creatorid'];
 ?>
 
 <!DOCTYPE html>
@@ -47,26 +49,27 @@
         const cols = <?php echo (int)$cols?>;
         let selectedSeat = null;
 
-const meetingName = "<?php echo htmlspecialchars($meetingName); ?>";
-const userEmail = "<?php echo $user['email']; ?>"; 
 
-// Function to create the seating grid
-function createGrid() {
-    seatingGrid.innerHTML = ""; 
-    seatingGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+        const meetingName = "<?php echo htmlspecialchars($meetingName); ?>";
+        const userEmail = "<?php echo $user['email']; ?>"; 
 
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-            let seat = document.createElement("section");
-            seat.classList.add("seat");
-            seat.dataset.row = r;
-            seat.dataset.col = c;
-            seat.innerText = "🪑";
-            seat.addEventListener("click", selectSeat);
-            seatingGrid.appendChild(seat);
+        // Function to create the seating grid
+        function createGrid() {
+            seatingGrid.innerHTML = ""; 
+            seatingGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    let seat = document.createElement("section");
+                    seat.classList.add("seat");
+                    seat.dataset.row = r;
+                    seat.dataset.col = c;
+                    seat.innerText = "🪑";
+                    seat.addEventListener("click", selectSeat);
+                    seatingGrid.appendChild(seat);
+                }
+            }
         }
-    }
-}
 
         // fetch seat updates every 2 seconds
         function fetchUpdatedSeats() {
@@ -193,7 +196,7 @@ function createGrid() {
     <script src="popUpManagement.js"></script>
 
     <section id="controls">
-        <button onclick="openPopup('commandPopup')">Activate Command</button>
+        <button id="activateCommandButton" onclick="openPopup('commandPopup')">Activate Command</button>
         <button onclick="openPopup('imagePopup')">Display an image</button>
         <button onclick="openPopup('soundPopup')">Play a sound</button>
         <button onclick="openPopup('videoPopup')">Play a video</button>
@@ -228,6 +231,14 @@ function createGrid() {
         </section>
     </section>
     
+    <script>
+        const creatorId = <?php echo (int)$creatorid?>;
+        const userId = <?php echo (int)$userId?>;
+        if (creatorId != userId) {
+            document.getElementById('activateCommandButton').style.display = "none";
+        }
+    </script>
+
     <script> 
         activateCommandButton.addEventListener('click', () => {
             activateSelectedCommand(meetingName);
@@ -299,9 +310,6 @@ function createGrid() {
                 <option value="sigh">Sigh</option>
                 <option value="boo">Boo</option>
             </select><br><br>
-
-            <label for="videoSpeed">Video Speed:</label>
-            <input type="number" id="videoSpeed" min="0.5" max="2.0" step="0.1" value="1.0"><br><br>
 
             <label for="videoVolume">Volume:</label>
             <input type="range" id="videoVolume" min="0" max="100" value="50">
