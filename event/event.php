@@ -19,7 +19,11 @@
     }
 
     $meetingName = $_GET['name'];
-
+    $meetingQuery = "SELECT row_num,col_num FROM events.meetings WHERE name = '$meetingName' LIMIT 1";
+    $resultMeeting = mysqli_query($conn,$meetingQuery);
+    $meetingRow = mysqli_fetch_assoc($resultMeeting);
+    $rows = $meetingRow['row_num'];
+    $cols = $meetingRow['col_num'];
 ?>
 
 <!DOCTYPE html>
@@ -40,15 +44,18 @@
 
     <script>
         const seatingGrid = document.getElementById("seatingGrid");
-const rows = 5;
-const cols = 10;
-let selectedSeat = null;
+        const rows = <?php echo (int)$rows?>;
+        const cols = <?php echo (int)$cols?>;
+        let selectedSeat = null;
 
 const meetingName = "<?php echo htmlspecialchars($meetingName); ?>";
-const userEmail = "<?php echo $user['email']; ?>"; // Fetch user's email from PHP session
+const userEmail = "<?php echo $user['email']; ?>"; 
+
 // Function to create the seating grid
 function createGrid() {
-    seatingGrid.innerHTML = ""; // Clear grid before re-rendering
+    seatingGrid.innerHTML = ""; 
+    seatingGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             let seat = document.createElement("section");
@@ -74,7 +81,8 @@ function fetchUpdatedSeats() {
 
                 if (takenSeat) {
                     seat.classList.add("taken");
-                    seat.innerText = "🚫";
+                    // seat.innerText = "🚫";
+                    seat.innerText = " ";
                     seat.removeEventListener("click", selectSeat);
                 } else if (!seat.classList.contains("selected")) {
                     seat.classList.remove("taken");
@@ -110,7 +118,8 @@ function selectSeat(event) {
     // Now, select the new seat
     selectedSeat = seat;
     seat.classList.add("selected");
-    seat.innerText = "😀";
+    // seat.innerText = "😀";
+    seat.innerText = " ";
 
     fetch(`saveSeat.php?name=${encodeURIComponent(meetingName)}`, {
         method: 'POST',

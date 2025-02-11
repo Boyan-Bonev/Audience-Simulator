@@ -19,8 +19,11 @@
 	   <label for="eventImg">Select image:</label>
 	   <input type="file" id="eventImg" name="eventsImg" accept="image/*"><br><br>
 
-	   <label for="usersNum">Event capacity:</label>
-	   <input type="number" id="usersNum" name="usersNum" min="1" max="32"><br><br>
+	   <label for="rowNum">Number of rows:</label>
+	   <input type="number" id="rowNum" name="rowNum" min="1" max="50"><br><br>
+
+	   <label for="colNum">Number of columns:</label>
+	   <input type="number" id="colNum" name="colNum" min="1" max="50"><br><br>
 
 	   <label for="eventDesc">Description:</label>
 	   <input type="text" id="eventDesc" name="eventDesc"><br><br>
