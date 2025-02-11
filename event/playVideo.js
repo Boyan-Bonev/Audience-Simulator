@@ -11,6 +11,15 @@ function playVideo() {
     const videoType = videoTypeSelect.value;
     const videoSpeed = videoSpeedInput.value;
     const videoVolume = videoVolumeSlider.value / 100;
+	var data = {"action":videoType};
+	 fetch("addAction.php",{
+      method: 'POST',
+	  
+	  headers: {
+               'Content-Type': 'application/json'   },
+      body: JSON.stringify(data),
+      
+    }).then(response => { return response.text();}).then(response => {console.log(response);});
     const queryString = `?type=${videoType}&speed=${videoSpeed}&volume=${videoVolume}`;
     
     window.location.href = '../eventButtons/playVideo/playVideo.html' + queryString;
