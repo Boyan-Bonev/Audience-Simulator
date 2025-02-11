@@ -19,8 +19,8 @@ try {
     $conn->exec($sql);
 
 
-	$sql = "INSERT INTO events.meetings (name,photo,description,participants,creatorid)
-	        VALUES ('test','test.jpg','mysql > mariadb','admin',1)";
+	$sql = "INSERT INTO events.meetings (name,photo,description,creatorid)
+	        VALUES ('test','test.jpg','mysql > mariadb',1)";
 	$conn->exec($sql);
     
     echo "Sample data has been successfully inserted into the databases.";
