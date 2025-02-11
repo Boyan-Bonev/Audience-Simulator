@@ -19,7 +19,11 @@
     }
 
     $meetingName = $_GET['name'];
-
+    $meetingQuery = "SELECT row_num,col_num FROM events.meetings WHERE name = '$meetingName' LIMIT 1";
+    $resultMeeting = mysqli_query($conn,$meetingQuery);
+    $meetingRow = mysqli_fetch_assoc($resultMeeting);
+    $rows = $meetingRow['row_num'];
+    $cols = $meetingRow['col_num'];
 ?>
 
 <!DOCTYPE html>
@@ -39,27 +43,30 @@
 
     <script>
         const seatingGrid = document.getElementById("seatingGrid");
-        const rows = 5;
-        const cols = 10;
+        const rows = <?php echo (int)$rows?>;
+        const cols = <?php echo (int)$cols?>;
         let selectedSeat = null;
 
-        const meetingName = "<?php echo htmlspecialchars($meetingName); ?>";
-        const userEmail = "<?php echo $user['email']; ?>";
+const meetingName = "<?php echo htmlspecialchars($meetingName); ?>";
+const userEmail = "<?php echo $user['email']; ?>"; 
 
-        function createGrid() {
-            seatingGrid.innerHTML = ""; // clear grid before re-rendering
-            for (let r = 0; r < rows; r++) {
-                for (let c = 0; c < cols; c++) {
-                    let seat = document.createElement("section");
-                    seat.classList.add("seat");
-                    seat.dataset.row = r;
-                    seat.dataset.col = c;
-                    seat.innerText = "🪑";
-                    seat.addEventListener("click", selectSeat);
-                    seatingGrid.appendChild(seat);
-                }
-            }
+// Function to create the seating grid
+function createGrid() {
+    seatingGrid.innerHTML = ""; 
+    seatingGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            let seat = document.createElement("section");
+            seat.classList.add("seat");
+            seat.dataset.row = r;
+            seat.dataset.col = c;
+            seat.innerText = "🪑";
+            seat.addEventListener("click", selectSeat);
+            seatingGrid.appendChild(seat);
         }
+    }
+}
 
         // fetch seat updates every 2 seconds
         function fetchUpdatedSeats() {
@@ -71,19 +78,20 @@
                         let col = seat.dataset.col;
                         let takenSeat = data.find(s => s.row_pos == row && s.col_pos == col);
 
-                        if (takenSeat) {
-                            seat.classList.add("taken");
-                            seat.innerText = "🚫";
-                            seat.removeEventListener("click", selectSeat);
-                        } else if (!seat.classList.contains("selected")) {
-                            seat.classList.remove("taken");
-                            seat.innerText = "🪑";
-                            seat.addEventListener("click", selectSeat);
-                        }
-                    });
-                })
-                .catch(error => console.error('Error fetching seat updates:', error));
-        }
+                if (takenSeat) {
+                    seat.classList.add("taken");
+                    // seat.innerText = "🚫";
+                    seat.innerText = " ";
+                    seat.removeEventListener("click", selectSeat);
+                } else if (!seat.classList.contains("selected")) {
+                    seat.classList.remove("taken");
+                    seat.innerText = "🪑";
+                    seat.addEventListener("click", selectSeat);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching seat updates:', error));
+}
 
         function selectSeat(event) {
             let seat = event.target;
@@ -104,9 +112,11 @@
                 selectedSeat.innerText = "🪑";
             }
 
-            selectedSeat = seat;
-            seat.classList.add("selected");
-            seat.innerText = "😀";
+    // Now, select the new seat
+    selectedSeat = seat;
+    seat.classList.add("selected");
+    // seat.innerText = "😀";
+    seat.innerText = " ";
 
             fetch(`saveSeat.php?name=${encodeURIComponent(meetingName)}`, {
                 method: 'POST',
