@@ -3,9 +3,9 @@
     require_once '../connectToEvents.php';
 
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        $meetingName = $_GET['meeting_name'];
+        $meetingName = $_GET['meetingName'];
 
-        $stmt = $mysqli->prepare("SELECT * FROM meetings WHERE name = ?");
+        $stmt = $conn->prepare("SELECT * FROM meetings WHERE name = ?");
         $stmt->bind_param("s", $meetingName);
 
         if (!$stmt->execute()) {
@@ -28,6 +28,6 @@
 
     echo json_encode(['error' => 'Invalid request']);
 
-    $mysqli->close();
+    $conn->close();
     
 ?>

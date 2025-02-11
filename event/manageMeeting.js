@@ -103,7 +103,7 @@ function createGrid(seatingGrid, rows, cols, meetingName, userEmail) {
 }
 
 function updateMeetingInfo(meetingName) {
-    fetch(`meeting.php?meeting_name=${meetingName}`)
+    fetch(`meeting.php?meetingName=${meetingName}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
