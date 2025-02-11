@@ -154,13 +154,15 @@
                 .then(data => {
                     if (data.success) {
                         document.getElementById('meetingName').textContent = data.meeting.name;
-                        document.getElementById('commandText').textContent = data.meeting.currentCommand;
+
                         const wantedAt = new Date(data.meeting.commandWantedAt);
                         const currentTime = new Date();
                         const diffInMilliseconds = wantedAt.getTime() - currentTime.getTime();
                         if (!isNaN(wantedAt) && diffInMilliseconds > 0) {
+                            document.getElementById('commandText').textContent = data.meeting.currentCommand;
                             document.getElementById('countdown').textContent = Math.round(diffInMilliseconds / 1000);
                         } else {
+                            document.getElementById('commandText').textContent = "";
                             document.getElementById('countdown').textContent = "";
                         }
                     } else {
