@@ -1,5 +1,4 @@
 const videoTypeSelect = document.getElementById('videoSelect');
-const videoSpeedInput = document.getElementById('videoSpeed');
 const videoVolumeSlider = document.getElementById('videoVolume');
 const videoVolumeValueDisplay = document.getElementById('videoVolumeValue');
 
@@ -9,7 +8,6 @@ videoVolumeSlider.oninput = function() {
 
 function playVideo() {
     const videoType = videoTypeSelect.value;
-    const videoSpeed = videoSpeedInput.value;
     const videoVolume = videoVolumeSlider.value / 100;
 	var data = {"action":videoType};
 	 fetch("addAction.php",{
@@ -20,7 +18,7 @@ function playVideo() {
       body: JSON.stringify(data),
       
     }).then(response => { return response.text();}).then(response => {console.log(response);});
-    const queryString = `?type=${videoType}&speed=${videoSpeed}&volume=${videoVolume}`;
+    const queryString = `?type=${videoType}&volume=${videoVolume}`;
     
     window.location.href = '../eventButtons/playVideo/playVideo.html' + queryString;
 };

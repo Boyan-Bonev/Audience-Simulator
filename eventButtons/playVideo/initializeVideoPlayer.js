@@ -1,6 +1,5 @@
 urlParams = new URLSearchParams(window.location.search);
 const videoType = urlParams.get('type');
-const videoSpeed = urlParams.get('speed');
 const videoVolume = urlParams.get('volume');
 const videoPlayer = document.getElementById('videoPlayer');
 
@@ -8,7 +7,6 @@ if (videoType && videoSpeed && videoVolume) {
   const videoPath = "../../reactionClips/" + videoType + ".mp4";
   videoPlayer.src = videoPath;
   videoPlayer.volume = videoVolume;
-  videoPlayer.playbackRate = videoSpeed;
 
   videoPlayer.onerror = function(error) {
       console.error('Error loading video:', error);
