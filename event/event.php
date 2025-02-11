@@ -19,7 +19,11 @@
     }
 
     $meetingName = $_GET['name'];
-
+    $meetingQuery = "SELECT row_num,col_num FROM events.meetings WHERE name = '$meetingName' LIMIT 1";
+    $resultMeeting = mysqli_query($conn,$meetingQuery);
+    $meetingRow = mysqli_fetch_assoc($resultMeeting);
+    $rows = $meetingRow['row_num'];
+    $cols = $meetingRow['col_num'];
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +35,6 @@
     <link rel="stylesheet" href="eventStyle.css">
 </head>
 <body>
-    <!-- connect it to the currently active command -->
     <section id="commandDisplay">
         Command: <span id="commandText"></span> | Time Left: <span id="countdown"></span>
     </section>
@@ -40,15 +43,18 @@
 
     <script>
         const seatingGrid = document.getElementById("seatingGrid");
-const rows = 5;
-const cols = 10;
-let selectedSeat = null;
+        const rows = <?php echo (int)$rows?>;
+        const cols = <?php echo (int)$cols?>;
+        let selectedSeat = null;
 
 const meetingName = "<?php echo htmlspecialchars($meetingName); ?>";
-const userEmail = "<?php echo $user['email']; ?>"; // Fetch user's email from PHP session
+const userEmail = "<?php echo $user['email']; ?>"; 
+
 // Function to create the seating grid
 function createGrid() {
-    seatingGrid.innerHTML = ""; // Clear grid before re-rendering
+    seatingGrid.innerHTML = ""; 
+    seatingGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             let seat = document.createElement("section");
@@ -62,19 +68,20 @@ function createGrid() {
     }
 }
 
-// Fetch seat updates every 2 seconds
-function fetchUpdatedSeats() {
-    fetch(`fetchSeats.php?name=${encodeURIComponent(meetingName)}`)
-        .then(response => response.json())
-        .then(data => {
-            document.querySelectorAll('.seat').forEach(seat => {
-                let row = seat.dataset.row;
-                let col = seat.dataset.col;
-                let takenSeat = data.find(s => s.row_pos == row && s.col_pos == col);
+        // fetch seat updates every 2 seconds
+        function fetchUpdatedSeats() {
+            fetch(`fetchSeats.php?name=${encodeURIComponent(meetingName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelectorAll('.seat').forEach(seat => {
+                        let row = seat.dataset.row;
+                        let col = seat.dataset.col;
+                        let takenSeat = data.find(s => s.row_pos == row && s.col_pos == col);
 
                 if (takenSeat) {
                     seat.classList.add("taken");
-                    seat.innerText = "🚫";
+                    // seat.innerText = "🚫";
+                    seat.innerText = " ";
                     seat.removeEventListener("click", selectSeat);
                 } else if (!seat.classList.contains("selected")) {
                     seat.classList.remove("taken");
@@ -86,86 +93,101 @@ function fetchUpdatedSeats() {
         .catch(error => console.error('Error fetching seat updates:', error));
 }
 
-// Function to select a seat
-function selectSeat(event) {
-    let seat = event.target;
-    let row = seat.dataset.row;
-    let col = seat.dataset.col;
+        function selectSeat(event) {
+            let seat = event.target;
+            let row = seat.dataset.row;
+            let col = seat.dataset.col;
 
-    // If a seat is already selected, free it before selecting a new one
-    if (selectedSeat) {
-        let prevRow = selectedSeat.dataset.row;
-        let prevCol = selectedSeat.dataset.col;
+            if (selectedSeat) {
+                let prevRow = selectedSeat.dataset.row;
+                let prevCol = selectedSeat.dataset.col;
 
-        fetch(`deselectSeat.php?name=${encodeURIComponent(meetingName)}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `row=${prevRow}&col=${prevCol}&user=${encodeURIComponent(userEmail)}`
-        }).catch(error => console.error('Error:', error));
+                fetch(`deselectSeat.php?name=${encodeURIComponent(meetingName)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `row=${prevRow}&col=${prevCol}&user=${encodeURIComponent(userEmail)}`
+                }).catch(error => console.error('Error:', error));
 
-        selectedSeat.classList.remove("selected");
-        selectedSeat.innerText = "🪑";
-    }
+                selectedSeat.classList.remove("selected");
+                selectedSeat.innerText = "🪑";
+            }
 
     // Now, select the new seat
     selectedSeat = seat;
     seat.classList.add("selected");
-    seat.innerText = "😀";
+    // seat.innerText = "😀";
+    seat.innerText = " ";
 
-    fetch(`saveSeat.php?name=${encodeURIComponent(meetingName)}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `row=${row}&col=${col}&user=${encodeURIComponent(userEmail)}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (!data.success) {
-            alert(data.message);
-            seat.classList.remove("selected");
-            seat.innerText = "🪑";
-        } else {
-            fetchUpdatedSeats();
+            fetch(`saveSeat.php?name=${encodeURIComponent(meetingName)}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `row=${row}&col=${col}&user=${encodeURIComponent(userEmail)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    alert(data.message);
+                    seat.classList.remove("selected");
+                    seat.innerText = "🪑";
+                } else {
+                    fetchUpdatedSeats();
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
-    })
-    .catch(error => console.error('Error:', error));
-}
 
-// Function to release the seat when the user leaves
-function handleUserLeaving() {
-    if (selectedSeat) {
-        let row = selectedSeat.dataset.row;
-        let col = selectedSeat.dataset.col;
+        function handleUserLeaving() {
+            if (selectedSeat) {
+                let row = selectedSeat.dataset.row;
+                let col = selectedSeat.dataset.col;
 
-        fetch(`releaseSeat.php?name=${encodeURIComponent(meetingName)}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `row=${row}&col=${col}&user=${encodeURIComponent(userEmail)}`
-        })
-        .catch(error => console.error('Error releasing seat:', error));
-    }
-}
+                fetch(`releaseSeat.php?name=${encodeURIComponent(meetingName)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `row=${row}&col=${col}&user=${encodeURIComponent(userEmail)}`
+                })
+                .catch(error => console.error('Error releasing seat:', error));
+            }
+        }
 
-// Attach event listeners to handle user leaving
-window.addEventListener('beforeunload', handleUserLeaving); // If user closes tab
-window.addEventListener('unload', handleUserLeaving); // Extra safety measure
+        window.addEventListener('beforeunload', handleUserLeaving);
+        window.addEventListener('unload', handleUserLeaving); // Extra safety measure
 
-// If there's a logout button, attach to that as well
-const logoutButton = document.getElementById("logoutButton"); // Ensure your logout button has this ID
-if (logoutButton) {
-    logoutButton.addEventListener("click", handleUserLeaving);
-}
+        createGrid();
+        fetchUpdatedSeats();
+        setInterval(fetchUpdatedSeats, 2000);
 
-// Initialize the seat grid and start fetching seat updates
-createGrid();
-fetchUpdatedSeats();
-setInterval(fetchUpdatedSeats, 2000);
+        // Fetch and update meeting info
+        function updateMeetingInfo() {
+            fetch(`meeting.php?meeting_name=${meetingName}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('meetingName').textContent = data.meeting.name;
 
+                        const wantedAt = new Date(data.meeting.commandWantedAt);
+                        const currentTime = new Date();
+                        const diffInMilliseconds = wantedAt.getTime() - currentTime.getTime();
+                        if (!isNaN(wantedAt) && diffInMilliseconds > 0) {
+                            document.getElementById('commandText').textContent = data.meeting.currentCommand;
+                            document.getElementById('countdown').textContent = Math.round(diffInMilliseconds / 1000);
+                        } else {
+                            document.getElementById('commandText').textContent = "";
+                            document.getElementById('countdown').textContent = "";
+                        }
+                    } else {
+                        alert(data.error || 'Failed to fetch meeting info');
+                        window.location.href = "../dashboard/dashboard.php"; 
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
+        // Periodically refresh meeting info
+        setInterval(updateMeetingInfo, 1000);
+
+        updateMeetingInfo();
     </script>
-    <!-- make it live! -->
-
-    <!-- dynamically adds participants instead of statically-->
-    <script src="manageMeeting.js"></script>
 
     <section class="overlay" id="overlay"></section>
     <script src="popUpManagement.js"></script>
@@ -202,9 +224,15 @@ setInterval(fetchUpdatedSeats, 2000);
             <label for="pointsInput">Minimum Points: </label>
             <input type="number" id="pointsInput" value="0" min="0"><br><br>
 
-            <button onclick="activateSelectedCommand()">Activate</button>
+            <button id ="activateCommandButton">Activate</button>
         </section>
     </section>
+    
+    <script> 
+        activateCommandButton.addEventListener('click', () => {
+            activateSelectedCommand(meetingName);
+        });
+    </script>
 
     <script src="activateCommand.js"></script>
 

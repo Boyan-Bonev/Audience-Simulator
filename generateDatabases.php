@@ -41,10 +41,12 @@ try {
         description TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         ends_at DATETIME DEFAULT NULL,
-        participantsCount INT DEFAULT 10,
+        row_num INT DEFAULT 10,
+        col_num INT DEFAULT 10,
         participants VARCHAR(255) DEFAULT NULL,
         currentCommand VARCHAR(32) DEFAULT NULL,
         commandWantedAt DATETIME DEFAULT NULL,
+        commandMinPoints INT DEFAULT 0,
         creatorid INT,
         FOREIGN KEY (creatorid) 
         REFERENCES registration_form.users(id)
