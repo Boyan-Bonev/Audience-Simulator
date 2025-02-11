@@ -27,37 +27,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="meetingName">Event Page</title>
     <link rel="stylesheet" href="eventStyle.css">
-
-    <link rel="stylesheet" href="eventStyles.css">
-    <style>
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(10, 50px);
-            gap: 5px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .seat {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: lightgray;
-            cursor: pointer;
-            font-size: 24px;
-            border-radius: 5px;
-            user-select: none;
-            transition: background-color 0.3s;
-        }
-        .seat.taken {
-            background-color: red;
-            pointer-events: none;
-        }
-        .seat.selected {
-            background-color: green;
-        }
-    </style>
 </head>
 <body>
     <!-- connect it to the currently active command -->
@@ -65,7 +34,7 @@
         Command: <span id="commandText"></span> | Time Left: <span id="countdown"></span>
     </section>
 
-    <div id="seatingGrid" class="grid"></div>
+    <section id="seatingGrid" class="grid"></section>
 
     <script>
         const rows = 5;
@@ -73,11 +42,10 @@
         const seatingGrid = document.getElementById("seatingGrid");
         let selectedSeat = null;
         const occupiedSeats = <?php echo json_encode($seats); ?>;
-
         function createGrid() {
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
-                    let seat = document.createElement("div");
+                    let seat = document.createElement("section");
                     seat.classList.add("seat");
                     seat.dataset.row = r;
                     seat.dataset.col = c;
@@ -132,16 +100,12 @@
     </script>
     <!-- make it live! -->
 
-    
-
     <!-- dynamically adds participants instead of statically-->
-
     <script src="manageMeeting.js"></script>
 
     <section class="overlay" id="overlay"></section>
     <script src="popUpManagement.js"></script>
-    <!-- make it so the user gains a point if -->
-    <!-- they time the correct reaction successfully -->
+
     <section id="controls">
         <button onclick="openPopup('commandPopup')">Activate Command</button>
         <button onclick="openPopup('imagePopup')">Display an image</button>

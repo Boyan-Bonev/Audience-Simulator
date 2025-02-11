@@ -43,6 +43,8 @@ try {
         ends_at DATETIME DEFAULT NULL,
         participantsCount INT DEFAULT 10,
         participants VARCHAR(255) DEFAULT NULL,
+        currentCommand VARCHAR(32) DEFAULT NULL,
+        commandWantedAt DATETIME DEFAULT NULL,
         creatorid INT,
         FOREIGN KEY (creatorid) 
         REFERENCES registration_form.users(id)
