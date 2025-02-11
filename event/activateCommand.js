@@ -4,7 +4,7 @@ function activateSelectedCommand() {
     const minPoints = parseInt(document.getElementById("pointsInput").value);
 
     displayCommand(selectedCommand, delay);
-
+	
     closePopup('commandPopup');
 }
 
@@ -31,5 +31,13 @@ function displayCommand(command, duration) {
             commandText.textContent = "";
             countdownDisplay.textContent = "";
         }
-    }, 1000); // update every second
+    }, 1000);
+	const data = {command:command}
+    fetch("awardPoints.php",{
+  method: "POST",
+  body: JSON.stringify(data),
+  headers: {
+    "Content-Type": "application/json; charset=UTF-8"
+  }
+});	
 }
