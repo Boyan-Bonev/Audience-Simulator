@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../login/database.php";
+require_once "../connectToEvents.php";
 
 if (!isset($_SESSION["user"])) {
     echo json_encode(["success" => false, "message" => "User not logged in"]);
@@ -19,7 +19,7 @@ $col = (int) $_POST['col'];
 $meetingName = $_GET['name'];
 $meetingName = mysqli_real_escape_string($conn, $meetingName);
 
-$eventIdQuery = "SELECT id FROM events.meetings WHERE name = '$meetingName'";
+$eventIdQuery = "SELECT id FROM meetings WHERE name = '$meetingName'";
 $eventIdResult = mysqli_query($conn, $eventIdQuery);
 
 if (!$eventIdResult) {
@@ -33,7 +33,7 @@ if (mysqli_num_rows($eventIdResult) == 0) {
 $eventIdRow = mysqli_fetch_assoc($eventIdResult);
 $eventId = $eventIdRow['id'];
 
-$checkQuery = "SELECT * FROM events.seating WHERE row_pos = ? AND col_pos = ? AND event_id = ? AND user = ?";
+$checkQuery = "SELECT * FROM seating WHERE row_pos = ? AND col_pos = ? AND event_id = ? AND user = ?";
 $stmt = mysqli_prepare($conn, $checkQuery);
 mysqli_stmt_bind_param($stmt, "iiss", $row, $col, $eventId, $email);
 mysqli_stmt_execute($stmt);
@@ -44,7 +44,7 @@ if (mysqli_num_rows($result) == 0) {
     exit;
 }
 
-$deleteQuery = "DELETE FROM events.seating WHERE row_pos = ? AND col_pos = ? AND event_id = ? AND user = ?";
+$deleteQuery = "DELETE FROM seating WHERE row_pos = ? AND col_pos = ? AND event_id = ? AND user = ?";
 $stmt = mysqli_prepare($conn, $deleteQuery);
 mysqli_stmt_bind_param($stmt, "iiss", $row, $col, $eventId, $email);
 

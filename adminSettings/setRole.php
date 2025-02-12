@@ -1,6 +1,6 @@
 <?php
 
-require_once '../login/database.php';
+require_once '../connectToEvents.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $_POST["user"];
@@ -19,7 +19,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->close();
 }
-
-$conn->close();
 
 ?>

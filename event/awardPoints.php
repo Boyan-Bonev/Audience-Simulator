@@ -3,8 +3,8 @@
   session_start();
   
    
-  require_once "../login/database.php";
-  $st = $conn->prepare("SELECT id FROM registration_form.users WHERE email = ?");
+  require_once "../connectToEvents.php";
+  $st = $conn->prepare("SELECT id FROM users WHERE email = ?");
   $st->bind_param("s",$_SESSION["user"]);
   $st->execute();
   $result = $st->get_result();
@@ -17,11 +17,11 @@
 	
 
     $inp = $conn->prepare(
-        "UPDATE registration_form.users SET points = points +1 WHERE roomid IN (SELECT id FROM events.meetings WHERE creatorid = ?) AND EXISTS (SELECT * FROM events.actions
+        "UPDATE users SET points = points +1 WHERE roomid IN (SELECT id FROM events.meetings WHERE creatorid = ?) AND EXISTS (SELECT * FROM events.actions
 		 WHERE userid=id AND action_name=?)");
     $inp->bind_param("is", $id,$command);
     $inp->execute();
-	$inp = $conn->prepare("DELETE FROM events.actions");
+	$inp = $conn->prepare("DELETE FROM actions");
 	$inp->execute();
 	
     $inp->close();

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../login/database.php";
+require_once "../connectToEvents.php";
 
 // Check if the user is logged in
 if (!isset($_SESSION["user"])) {
@@ -22,7 +22,7 @@ $meetingName = $_GET['name'];
 $meetingName = mysqli_real_escape_string($conn, $meetingName);
 
 // Fetch the eventId corresponding to the meeting name
-$eventIdQuery = "SELECT id FROM events.meetings WHERE name = '$meetingName'";
+$eventIdQuery = "SELECT id FROM meetings WHERE name = '$meetingName'";
 $eventIdResult = mysqli_query($conn, $eventIdQuery);
 
 if (!$eventIdResult) {
@@ -37,7 +37,7 @@ $eventIdRow = mysqli_fetch_assoc($eventIdResult);
 $eventId = $eventIdRow['id'];
 
 // Check if the seat is already reserved by the user
-$checkQuery = "SELECT * FROM events.seating WHERE row_pos = ? AND col_pos = ? AND event_id = ? AND user = ?";
+$checkQuery = "SELECT * FROM seating WHERE row_pos = ? AND col_pos = ? AND event_id = ? AND user = ?";
 $stmt = mysqli_prepare($conn, $checkQuery);
 mysqli_stmt_bind_param($stmt, "iiss", $row, $col, $eventId, $email);
 mysqli_stmt_execute($stmt);
@@ -49,7 +49,7 @@ if (mysqli_num_rows($result) == 0) {
 }
 
 // Delete the seat reservation for the user (free the seat)
-$deleteQuery = "DELETE FROM events.seating WHERE row_pos = ? AND col_pos = ? AND event_id = ? AND user = ?";
+$deleteQuery = "DELETE FROM seating WHERE row_pos = ? AND col_pos = ? AND event_id = ? AND user = ?";
 $stmt = mysqli_prepare($conn, $deleteQuery);
 mysqli_stmt_bind_param($stmt, "iiss", $row, $col, $eventId, $email);
 

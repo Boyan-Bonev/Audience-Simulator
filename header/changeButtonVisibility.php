@@ -1,6 +1,6 @@
 <?php
 
-require_once '../login/database.php';
+require_once '../connectToEvents.php';
 
 $user = $_SESSION["user"];
 
@@ -25,6 +25,5 @@ if ($result->num_rows > 0) {
 }
     
 $stmt->close();
-$conn->close();
 
 ?>

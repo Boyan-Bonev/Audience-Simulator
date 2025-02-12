@@ -9,7 +9,7 @@ if (!isset($_SESSION["user"])) {
     exit;
 }
 
-require_once "../login/database.php";
+require_once "../connectToEvents.php";
 
 $email = $_SESSION["user"];
 

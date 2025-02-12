@@ -43,7 +43,7 @@
                 array_push($errors, "Password does not match");
             }
 
-            require_once "database.php";
+            require_once "../connectToEvents.php";
 
             $sql = "SELECT * FROM users WHERE email = '$email'";
             $result = mysqli_query($conn,$sql);

@@ -5,7 +5,7 @@
     {
         header("Location: ../login/login.php");
     }
-    require_once "../login/database.php";
+    require_once "../connectToEvents.php";
 
     $email = $_SESSION["user"];
     $userId = $_SESSION["userId"];
@@ -14,14 +14,14 @@
     $user = mysqli_fetch_array($result,MYSQLI_ASSOC);
 
     $seats = [];
-    $seatQuery = "SELECT row_pos, col_pos, user FROM events.seating WHERE event_id = 2";
+    $seatQuery = "SELECT row_pos, col_pos, user FROM seating WHERE event_id = 2";
     $seatResult = mysqli_query($conn, $seatQuery);
     while ($seat = mysqli_fetch_assoc($seatResult)) {
         $seats[] = $seat;
     }
 
     $meetingName = $_GET['name'];
-    $meetingQuery = "SELECT row_num,col_num,creatorid FROM events.meetings WHERE name = '$meetingName' LIMIT 1";
+    $meetingQuery = "SELECT row_num,col_num,creatorid FROM meetings WHERE name = '$meetingName' LIMIT 1";
     $resultMeeting = mysqli_query($conn,$meetingQuery);
     $meetingRow = mysqli_fetch_assoc($resultMeeting);
     $rows = $meetingRow['row_num'];

@@ -1,10 +1,9 @@
 <?php
-require_once "../login/database.php";
+require_once "../connectToEvents.php";
 
 $meetingName = $_GET['name'];
-//$meetingName = 'cool name 2';
 $meetingName = mysqli_real_escape_string($conn, $meetingName);
-$eventIdQuery = "SELECT id FROM events.meetings WHERE name = '$meetingName'";
+$eventIdQuery = "SELECT id FROM meetings WHERE name = '$meetingName'";
 $eventIdResult = mysqli_query($conn, $eventIdQuery);
 
 if (!$eventIdResult) {
@@ -17,7 +16,7 @@ if (mysqli_num_rows($eventIdResult) == 0) {
 $eventIdRow = mysqli_fetch_assoc($eventIdResult);
 $eventId = $eventIdRow['id'];
 
-$seatQuery = "SELECT row_pos, col_pos,user FROM events.seating WHERE event_id = $eventId";
+$seatQuery = "SELECT row_pos, col_pos,user FROM seating WHERE event_id = $eventId";
 $seatResult = mysqli_query($conn, $seatQuery);
 
 $seats = [];
