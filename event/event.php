@@ -14,7 +14,7 @@
     $user = mysqli_fetch_array($result,MYSQLI_ASSOC);
 
     $seats = [];
-    $seatQuery = "SELECT row_pos, col_pos, user FROM seating WHERE event_id = 2";
+    $seatQuery = "SELECT row_pos, col_pos, user FROM events.seating WHERE event_id = 2";
     $seatResult = mysqli_query($conn, $seatQuery);
     while ($seat = mysqli_fetch_assoc($seatResult)) {
         $seats[] = $seat;

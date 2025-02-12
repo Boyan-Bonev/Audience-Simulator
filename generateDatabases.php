@@ -70,7 +70,7 @@ try {
         ";
     $conn->exec($sql);
 
-    $sql = "CREATE TABLE seating (
+    $sql = "CREATE TABLE events.seating (
         id INT AUTO_INCREMENT PRIMARY KEY,
         row_pos INT NOT NULL,
         col_pos INT NOT NULL,

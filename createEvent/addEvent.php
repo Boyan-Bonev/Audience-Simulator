@@ -41,10 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$desc = $_POST["eventDesc"];
     $created_at = date('Y-m-d H:i:s', time());
     $ends_at = date('Y-m-d H:i:s', time() + (60*60));
+    $creatorid = $_SESSION["userId"];
 
     $inp = $conn->prepare(
-        "INSERT INTO events.meetings (name,row_num,col_num,photo,description,created_at,ends_at) VALUES (?,?,?,?,?,?,?)");
-    $inp->bind_param("siissss", $name, $rowNum,$colNum,$imgName,$desc,$created_at,$ends_at);
+        "INSERT INTO events.meetings (name,row_num,col_num,photo,description,created_at,ends_at,creatorid) VALUES (?,?,?,?,?,?,?,?)");
+    $inp->bind_param("siisssss", $name, $rowNum,$colNum,$imgName,$desc,$created_at,$ends_at,$creatorid);
     $inp->execute();
 
     $inp->close();
