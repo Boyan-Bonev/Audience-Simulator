@@ -117,8 +117,18 @@ function updateMeetingInfo(meetingName) {
                     document.getElementById('commandText').textContent = data.meeting.currentCommand;
                     document.getElementById('countdown').textContent = Math.round(diffInMilliseconds / 1000);
                 } else {
+					var data = {"command":document.getElementById('commandText').textContent};
+					fetch("awardPoints.php",{
+					method: 'POST',
+					  
+					headers: {
+							   'Content-Type': 'application/json'   },
+					body: JSON.stringify(data),
+					  
+					}).then(response => { return response.text();}).then(response => {console.log(response);});
                     document.getElementById('commandText').textContent = "";
                     document.getElementById('countdown').textContent = "";
+					
                 }
             } else {
                 alert(data.error || 'Failed to fetch meeting info');

@@ -53,4 +53,14 @@ if (mysqli_stmt_execute($stmt)) {
 } else {
     echo json_encode(["success" => false, "message" => "Database error"]);
 }
+
+$insertQuery = "UPDATE registration_form.users SET roomid = ? where email=?";
+$stmt = mysqli_prepare($conn, $insertQuery);
+mysqli_stmt_bind_param($stmt, "is", $eventId, $email);
+
+if (mysqli_stmt_execute($stmt)) {
+    echo json_encode(["success" => true, "message" => "roomid updated successfully"]);
+} else {
+    echo json_encode(["success" => false, "message" => "Database error"]);
+}
 ?>

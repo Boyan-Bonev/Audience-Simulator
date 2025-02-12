@@ -21,7 +21,9 @@
 		 WHERE userid=id AND action_name=?)");
     $inp->bind_param("is", $id,$command);
     $inp->execute();
-	$conn->exec("DELETE FROM events.actions");
+	$inp = $conn->prepare("DELETE FROM events.actions");
+	$inp->execute();
+	
     $inp->close();
 	
 	
