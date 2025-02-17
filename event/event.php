@@ -181,5 +181,8 @@
     </section>
 
     <script src="playVideo.js"></script>
+	<section id="exitBtn">
+		<a href="../dashboard/dashboard.php" class="button">Exit</a>
+	</section> 
 </body>
 </html>

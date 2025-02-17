@@ -129,7 +129,19 @@ body {
 .popup button:hover {
     background: #2980b9;
 }
-
+a.button {
+    
+    text-decoration: none;
+	
+	background: #f05454;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;	
+}
 /* Overlay effect */
 .overlay {
     display: none;
