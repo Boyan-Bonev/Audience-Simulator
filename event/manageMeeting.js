@@ -103,7 +103,7 @@ function createGrid(seatingGrid, rows, cols, meetingName, userEmail) {
 }
 
 function updateMeetingInfo(meetingName) {
-    fetch(`meeting.php?meeting_name=${meetingName}`)
+    fetch(`meeting.php?meetingName=${meetingName}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -117,8 +117,18 @@ function updateMeetingInfo(meetingName) {
                     document.getElementById('commandText').textContent = data.meeting.currentCommand;
                     document.getElementById('countdown').textContent = Math.round(diffInMilliseconds / 1000);
                 } else {
+					var data = {"command":document.getElementById('commandText').textContent};
+					fetch("awardPoints.php",{
+					method: 'POST',
+					  
+					headers: {
+							   'Content-Type': 'application/json'   },
+					body: JSON.stringify(data),
+					  
+					}).then(response => { return response.text();}).then(response => {console.log(response);});
                     document.getElementById('commandText').textContent = "";
                     document.getElementById('countdown').textContent = "";
+					
                 }
             } else {
                 alert(data.error || 'Failed to fetch meeting info');

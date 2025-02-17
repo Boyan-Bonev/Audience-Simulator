@@ -1,6 +1,6 @@
 <?php
 
-require_once '../login/database.php';
+require_once '../connectToEvents.php';
 
 $sql = "SELECT name FROM users";
 $result = $conn->query($sql);
@@ -14,7 +14,5 @@ if ($result->num_rows > 0) {
 
 header('Content-Type: application/json');
 echo json_encode($users);
-
-$conn->close();
 
 ?>

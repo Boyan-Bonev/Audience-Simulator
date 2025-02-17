@@ -8,11 +8,11 @@ if (!isset($_SESSION["user"])) {
     exit;
 }
 
-require_once "../login/database.php";
+require_once "../connectToEvents.php";
 
 $email = $_SESSION["user"];
 
-$stmt = $conn->prepare("SELECT name, photo,role,points FROM registration_form.users WHERE email = ?");
+$stmt = $conn->prepare("SELECT name, photo,role,points FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();

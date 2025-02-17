@@ -1,16 +1,6 @@
 <?php
     
-    try {
-        $conn = new mysqli("localhost", "root", "", "events");
-    }
-    catch (mysqli_sql_exception $e) {
-        die("Could not connect to the database: " . $e->getMessage());
-    }
-
-    if ($conn->connect_error) {
-        die("A database error occurred. Please try again later.");
-    }
-
+    require_once "../connectToEvents.php";
     $sql = "SELECT name, photo, description FROM meetings";
     $result = $conn->query($sql);
 
@@ -27,7 +17,5 @@
     } else {
         echo "<p>No events found.</p>";
     }
-
-    $conn->close();
 
 ?>

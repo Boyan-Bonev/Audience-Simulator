@@ -5,7 +5,7 @@
     {
         header("Location: ../login/login.php");
     }
-    require_once "../login/database.php";
+    require_once "../connectToEvents.php";
 
     $email = $_SESSION["user"];
     $userId = $_SESSION["userId"];
@@ -21,7 +21,7 @@
     }
 
     $meetingName = $_GET['name'];
-    $meetingQuery = "SELECT row_num,col_num,creatorid FROM events.meetings WHERE name = '$meetingName' LIMIT 1";
+    $meetingQuery = "SELECT row_num,col_num,creatorid FROM meetings WHERE name = '$meetingName' LIMIT 1";
     $resultMeeting = mysqli_query($conn,$meetingQuery);
     $meetingRow = mysqli_fetch_assoc($resultMeeting);
     $rows = $meetingRow['row_num'];

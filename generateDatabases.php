@@ -14,9 +14,9 @@ try {
 			SET foreign_key_checks = 1";
     $conn->exec($sql);
 
-    $sql = "CREATE DATABASE registration_form";
+    $sql = "CREATE DATABASE events";
     $conn->exec($sql);
-    $conn->exec("USE registration_form");
+    $conn->exec("USE events");
 
     $sql = "CREATE TABLE users (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,10 +29,6 @@ try {
 	roomid INT DEFAULT NULL
     )";
     $conn->exec($sql);
-
-    $sql = "CREATE DATABASE events";
-    $conn->exec($sql);
-    $conn->exec("USE events");
 
     $sql = "CREATE TABLE meetings (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -48,9 +44,9 @@ try {
         commandWantedAt DATETIME DEFAULT NULL,
         commandMinPoints INT DEFAULT 0,
         creatorid INT,
+        INDEX(creatorid),
         FOREIGN KEY (creatorid) 
-        REFERENCES registration_form.users(id)
-        
+        REFERENCES users(id)
     )";
 
     $conn->exec($sql);
@@ -58,15 +54,14 @@ try {
     userid INT PRIMARY KEY,
     action_name VARCHAR(50) NOT NULL,
     FOREIGN KEY (userid)
-    REFERENCES registration_form.users(id)
+    REFERENCES users(id)
     
         )";
     $conn->exec($sql);
    
-    $conn->exec("USE registration_form");
     $sql = "ALTER TABLE users
         ADD CONSTRAINT fk_room_id FOREIGN KEY (roomid)
-        REFERENCES events.meetings(id)
+        REFERENCES meetings(id)
         ";
     $conn->exec($sql);
 
@@ -76,7 +71,7 @@ try {
         col_pos INT NOT NULL,
         user VARCHAR(255) NOT NULL,
         event_id INT NOT NULL,
-        FOREIGN KEY (event_id) REFERENCES events.meetings(id) ON DELETE CASCADE
+        FOREIGN KEY (event_id) REFERENCES meetings(id) ON DELETE CASCADE
     )";
     $conn->exec($sql);
 

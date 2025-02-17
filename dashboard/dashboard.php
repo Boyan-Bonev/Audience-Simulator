@@ -4,7 +4,7 @@
     {
         header("Location: ../login/login.php");
     }
-    require_once "../login/database.php";
+    require_once "../connectToEvents.php";
     $email = $_SESSION["user"];
     $sql = "SELECT * FROM users WHERE email='$email'";
     $result = mysqli_query($conn,$sql);
